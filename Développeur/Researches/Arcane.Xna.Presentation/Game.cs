@@ -13,7 +13,6 @@ namespace Arcane.Xna.Presentation
     /// <summary>
     /// Logique d'interaction pour GameCanvas.xaml
     /// </summary>
-    [System.Windows.Markup.ContentProperty("WPFHost")]
     public partial class Game : Canvas, IDisposable
     {
 

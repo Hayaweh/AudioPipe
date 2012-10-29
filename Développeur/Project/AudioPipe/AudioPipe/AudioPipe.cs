@@ -4,15 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using APGameEngine;
+using APGameGenerator;
+using APSoundAnalyzer;
 
 namespace AudioPipe
 {
     static class AudioPipe
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            Game ge = new Game();
-            ge.Run();
+            GameEngine game = new GameEngine();
+            GameGenerator generator = new GameGenerator();
+            SoundAnalyzer analyzer = new SoundAnalyzer();
+            game.setGameGenerator(generator);
+            game.setSoundAnalyzer(analyzer);
+            game.Run();
         }
     }
 }

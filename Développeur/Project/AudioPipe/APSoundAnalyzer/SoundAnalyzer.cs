@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace APSoundAnalyzer
 {
-    public class APSoundAnalyzer
+    public class SoundAnalyzer
     {
+        public SoundAnalyzer()
+        {
+
+        }
     }
 }

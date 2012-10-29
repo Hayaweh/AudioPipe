@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace APGameGenerator
 {
-    public class APGameGenerator
+    public class GameGenerator
     {
+        public GameGenerator()
+        {
+
+        }
     }
 }

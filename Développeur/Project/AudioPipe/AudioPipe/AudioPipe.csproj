@@ -9,8 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AudioPipe</RootNamespace>
     <AssemblyName>AudioPipe</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,10 +67,21 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\APGameEngine\APGameEngine.csproj">
-      <Project>{cf796440-e767-4fdc-b2b7-a0a0668c6a0a}</Project>
+    <ProjectReference Include="..\APGameEngine\APGameEngine\APGameEngine.csproj">
+      <Project>{bc82d7c1-17af-4671-8b15-0e6c2c71539e}</Project>
       <Name>APGameEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\APGameGenerator\APGameGenerator.csproj">
+      <Project>{7fb1670c-377f-4a54-90a6-4a5bf50682b4}</Project>
+      <Name>APGameGenerator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\APSoundAnalyzer\APSoundAnalyzer.csproj">
+      <Project>{b6d55fcd-cf42-4331-9d5e-e69169fd1d46}</Project>
+      <Name>APSoundAnalyzer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
