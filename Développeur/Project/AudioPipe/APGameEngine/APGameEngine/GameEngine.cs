@@ -34,12 +34,15 @@ namespace APGameEngine
 
         GraphicsDeviceManager m_graphicsMngr = null;
         SpriteBatch m_spriteBatch = null;
-        ElementHost m_elementHost = null;
+        ElementHost m_mainMenuHost = null;
         UserControls m_userInterface = null;
         GameGenerator m_gameGenerator = null;
         SoundAnalyzer m_soundAnalyzer = null;
-        Texture2D m_textRec = null;
-        Rectangle m_rec;
+
+        string m_gamePhase = null;
+        List<string> m_previousGamePhase = null;
+
+        Rectangle m_mainMenuInterfaceHandler;
 
         #endregion
 
@@ -47,8 +50,6 @@ namespace APGameEngine
 
         public GameEngine()
         {
-            m_elementHost = new ElementHost();
-            m_userInterface = new UserControls();
             m_graphicsMngr = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             m_graphicsMngr.PreferredBackBufferWidth = 800;
@@ -69,7 +70,7 @@ namespace APGameEngine
         {
             // TODO: Add your initialization logic here
 
-            m_rec = new Rectangle(400, 200, 30, 30);
+            m_previousGamePhase = new List<string>();
 
             base.Initialize();
         }
@@ -80,17 +81,30 @@ namespace APGameEngine
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Adding interface
-            m_elementHost.Location = new System.Drawing.Point(250, 150);
-            m_elementHost.Size = new Size(300, 300);
-            m_elementHost.Child = m_userInterface;
+            if (m_gamePhase == "launch")
+            {
+                // Create a new SpriteBatch, which can be used to draw textures.
+                m_spriteBatch = new SpriteBatch(GraphicsDevice);
+
+                m_mainMenuHost = new ElementHost();
+                m_userInterface = new UserControls();
+
+                m_gamePhase = "main menu";
+            }
+
+            if (m_gamePhase == "main menu")
+            {
+                //Adding interface
+                m_mainMenuHost.Location = new System.Drawing.Point(250, 150);
+                m_mainMenuHost.Size = new Size(300, 300);
+                m_mainMenuHost.Child = m_userInterface;
+            }
+
+            
 
             // TODO: use this.Content to load your game content here
 
-            m_textRec = Content.Load<Texture2D>("GameThumbnail");
         }
 
         /// <summary>
@@ -109,10 +123,7 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            Control.FromHandle(Window.Handle).Controls.Add(m_elementHost);
-
-            if (m_userInterface.QuitButton.IsPressed)
-                this.Exit();
+            
 
             // TODO: Add your update logic here
 
@@ -127,9 +138,7 @@ namespace APGameEngine
         {
             GraphicsDevice.Clear(Color.Red);
 
-            m_spriteBatch.Begin();
-            m_spriteBatch.Draw(m_textRec, m_rec, Color.White);
-            m_spriteBatch.End();
+            
 
             base.Draw(gameTime);
         }
