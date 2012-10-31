@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dataweb_nshape version="4">
-  <project id="eb10fab7-7074-4cae-8b3f-95c090cdaf86" last_saved_utc="2012-10-30 18:34:55">
+  <project id="eb10fab7-7074-4cae-8b3f-95c090cdaf86" last_saved_utc="2012-10-31 09:41:51">
     <libraries>
       <library name="GeneralShapes" assembly_name="Dataweb.NShape.GeneralShapes, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c" repository_version="4" />
     </libraries>
@@ -338,49 +338,22 @@
             <connection_points />
           </polyline>
           <box id="fb400cbf-db9c-4453-92db-0088ecbb6dd4" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="320" y="520" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="37883f2a-0152-49d6-8e28-12b5720eed34" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Difficulty Choice Pop-up" width="100" height="50"></box>
-          <box id="26c2f58c-e23a-406e-9974-5100e29d2c42" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="200" y="420" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="091e6585-0f46-4f6e-8e29-501b7b3867eb" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Save parameters" width="100" height="50"></box>
-          <box id="78cfb22e-2a03-43aa-ab59-a6679d7d5695" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="320" y="420" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="091e6585-0f46-4f6e-8e29-501b7b3867eb" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Discard parameters" width="100" height="50"></box>
-          <polyline id="41950d1f-f402-46b0-b2a7-9f40bc60759e" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="200" y="495" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+          <box id="26c2f58c-e23a-406e-9974-5100e29d2c42" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="200" y="340" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="091e6585-0f46-4f6e-8e29-501b7b3867eb" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Save parameters" width="100" height="50"></box>
+          <box id="78cfb22e-2a03-43aa-ab59-a6679d7d5695" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="320" y="340" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="091e6585-0f46-4f6e-8e29-501b7b3867eb" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Discard parameters" width="100" height="50"></box>
+          <polyline id="a7e23801-0449-4618-8775-b4190f4a5549" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="200" y="315" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
             <vertices>
-              <vertex point_index="0" point_id="1" x="200" y="495" />
-              <vertex point_index="1" point_id="3" x="200" y="480" />
-              <vertex point_index="2" point_id="4" x="260" y="480" />
-              <vertex point_index="3" point_id="5" x="260" y="460" />
-              <vertex point_index="4" point_id="6" x="320" y="460" />
-              <vertex point_index="5" point_id="2" x="320" y="445" />
-            </vertices>
-            <connection_points />
-          </polyline>
-          <polyline id="1518b92a-5c83-4e88-9dba-b58c6cd4c849" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="320" y="495" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
-            <vertices>
-              <vertex point_index="0" point_id="1" x="320" y="495" />
-              <vertex point_index="1" point_id="3" x="320" y="480" />
-              <vertex point_index="2" point_id="2" x="260" y="480" />
-            </vertices>
-            <connection_points />
-          </polyline>
-          <polyline id="a45420fd-5a7c-4412-aaf2-3d4fcaf18bc5" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="260" y="460" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
-            <vertices>
-              <vertex point_index="0" point_id="1" x="260" y="460" />
-              <vertex point_index="1" point_id="3" x="200" y="460" />
-              <vertex point_index="2" point_id="2" x="200" y="445" />
-            </vertices>
-            <connection_points />
-          </polyline>
-          <polyline id="a7e23801-0449-4618-8775-b4190f4a5549" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="200" y="395" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
-            <vertices>
-              <vertex point_index="0" point_id="1" x="200" y="395" />
-              <vertex point_index="1" point_id="3" x="200" y="380" />
-              <vertex point_index="2" point_id="4" x="400" y="380" />
+              <vertex point_index="0" point_id="1" x="200" y="315" />
+              <vertex point_index="1" point_id="3" x="200" y="300" />
+              <vertex point_index="2" point_id="4" x="400" y="300" />
               <vertex point_index="3" point_id="5" x="400" y="680" />
               <vertex point_index="4" point_id="2" x="250" y="680" />
             </vertices>
             <connection_points />
           </polyline>
-          <polyline id="26428b05-7c1a-4458-89f4-10371748f61a" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="320" y="395" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+          <polyline id="26428b05-7c1a-4458-89f4-10371748f61a" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="320" y="315" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
             <vertices>
-              <vertex point_index="0" point_id="1" x="320" y="395" />
-              <vertex point_index="1" point_id="2" x="320" y="380" />
+              <vertex point_index="0" point_id="1" x="320" y="315" />
+              <vertex point_index="1" point_id="2" x="320" y="300" />
             </vertices>
             <connection_points />
           </polyline>
@@ -419,8 +392,60 @@
           <box id="4a86ff2d-8e97-47b9-810b-fb581f01fe35" template="5cbc19b9-47d4-4bcc-a739-ac3966ea5f2c" model_object="00000000-0000-0000-0000-000000000000" x="130" y="1080" z_order="70" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" angle="0" fill_style="edbfaee8-27ad-4bce-8fb6-2866efa99dd0" character_style="48392f4f-8024-4c58-adb6-3abef4e38a0b" paragraph_style="00000000-0000-0000-0000-000000000000" text="Load Content" width="60" height="40"></box>
           <box id="a42d5f1e-d7b6-4d66-b773-9120ac29b74d" template="5cbc19b9-47d4-4bcc-a739-ac3966ea5f2c" model_object="00000000-0000-0000-0000-000000000000" x="210" y="1080" z_order="80" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" angle="0" fill_style="00000000-0000-0000-0000-000000000000" character_style="48392f4f-8024-4c58-adb6-3abef4e38a0b" paragraph_style="00000000-0000-0000-0000-000000000000" text="Draw" width="60" height="40"></box>
           <box id="d8837566-4b25-4807-971f-6ce9906d612b" template="5cbc19b9-47d4-4bcc-a739-ac3966ea5f2c" model_object="00000000-0000-0000-0000-000000000000" x="130" y="1030" z_order="90" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" angle="0" fill_style="00000000-0000-0000-0000-000000000000" character_style="00000000-0000-0000-0000-000000000000" paragraph_style="00000000-0000-0000-0000-000000000000" text="LEGEND (XNA Cut)" width="220" height="20"></box>
+          <box id="20338f44-0cf1-4af7-9d7b-8116fa613216" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="200" y="440" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="edbfaee8-27ad-4bce-8fb6-2866efa99dd0" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Music Choice Menu" width="100" height="50"></box>
+          <box id="d21cc288-032d-4163-807c-a4e053863d9f" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="320" y="440" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="edbfaee8-27ad-4bce-8fb6-2866efa99dd0" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Difficulty Choice Menu" width="100" height="50"></box>
+          <polyline id="ff1591d2-9c9d-40ad-bbb3-a3645c37fd2f" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="320" y="495" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+            <vertices>
+              <vertex point_index="0" point_id="1" x="320" y="495" />
+              <vertex point_index="1" point_id="2" x="320" y="465" />
+            </vertices>
+            <connection_points />
+          </polyline>
+          <polyline id="299e227a-0756-42ba-b2e7-422c8514df91" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="200" y="495" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+            <vertices>
+              <vertex point_index="0" point_id="1" x="200" y="495" />
+              <vertex point_index="1" point_id="2" x="200" y="465" />
+            </vertices>
+            <connection_points />
+          </polyline>
+          <polyline id="9294a8af-bb1a-4753-84f7-0cbeb0ea2f48" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="260" y="400" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+            <vertices>
+              <vertex point_index="0" point_id="1" x="260" y="400" />
+              <vertex point_index="1" point_id="2" x="260" y="380" />
+            </vertices>
+            <connection_points />
+          </polyline>
+          <polyline id="1bdcd00a-e3e0-4506-a76e-82d87a74eafb" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="200" y="365" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+            <vertices>
+              <vertex point_index="0" point_id="1" x="200" y="365" />
+              <vertex point_index="1" point_id="3" x="200" y="380" />
+              <vertex point_index="2" point_id="4" x="320" y="380" />
+              <vertex point_index="3" point_id="2" x="320" y="365" />
+            </vertices>
+            <connection_points />
+          </polyline>
+          <polyline id="0f4fafb9-57ba-4447-a7e6-aa81ec8633de" template="2dad0a12-8ab6-47a3-b158-25cca99bf1d8" model_object="00000000-0000-0000-0000-000000000000" x="320" y="415" z_order="0" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" start_cap_style="00000000-0000-0000-0000-000000000000" end_cap_style="00000000-0000-0000-0000-000000000000">
+            <vertices>
+              <vertex point_index="0" point_id="1" x="320" y="415" />
+              <vertex point_index="1" point_id="3" x="320" y="400" />
+              <vertex point_index="2" point_id="4" x="200" y="400" />
+              <vertex point_index="3" point_id="2" x="200" y="415" />
+            </vertices>
+            <connection_points />
+          </polyline>
+          <box id="e5f536cf-ac5e-483e-8d3f-39e70f9a16ea" template="00000000-0000-0000-0000-000000000000" model_object="00000000-0000-0000-0000-000000000000" x="80" y="521" z_order="0" layers="0" security_domain_name="A" line_style="3365e099-d4f7-40a2-b466-197812136b66" angle="0" fill_style="37883f2a-0152-49d6-8e28-12b5720eed34" character_style="79d090bc-7ad2-4f7b-bc41-1806bdb44dbb" paragraph_style="a944871b-8be7-4511-a3a6-5378ec096089" text="Music Choice Loading" width="100" height="50"></box>
         </shapes>
         <shape_connections>
+          <shape_connection active_shape="9294a8af-bb1a-4753-84f7-0cbeb0ea2f48" glue_point="-1" passive_shape="0f4fafb9-57ba-4447-a7e6-aa81ec8633de" connection_point="0"></shape_connection>
+          <shape_connection active_shape="9294a8af-bb1a-4753-84f7-0cbeb0ea2f48" glue_point="-2" passive_shape="1bdcd00a-e3e0-4506-a76e-82d87a74eafb" connection_point="0"></shape_connection>
+          <shape_connection active_shape="0f4fafb9-57ba-4447-a7e6-aa81ec8633de" glue_point="-1" passive_shape="d21cc288-032d-4163-807c-a4e053863d9f" connection_point="2"></shape_connection>
+          <shape_connection active_shape="0f4fafb9-57ba-4447-a7e6-aa81ec8633de" glue_point="-2" passive_shape="20338f44-0cf1-4af7-9d7b-8116fa613216" connection_point="2"></shape_connection>
+          <shape_connection active_shape="1bdcd00a-e3e0-4506-a76e-82d87a74eafb" glue_point="-1" passive_shape="26c2f58c-e23a-406e-9974-5100e29d2c42" connection_point="7"></shape_connection>
+          <shape_connection active_shape="1bdcd00a-e3e0-4506-a76e-82d87a74eafb" glue_point="-2" passive_shape="78cfb22e-2a03-43aa-ab59-a6679d7d5695" connection_point="7"></shape_connection>
+          <shape_connection active_shape="299e227a-0756-42ba-b2e7-422c8514df91" glue_point="-1" passive_shape="ce7ebfbc-a95b-4a90-9b51-e752e700618e" connection_point="2"></shape_connection>
+          <shape_connection active_shape="299e227a-0756-42ba-b2e7-422c8514df91" glue_point="-2" passive_shape="20338f44-0cf1-4af7-9d7b-8116fa613216" connection_point="7"></shape_connection>
+          <shape_connection active_shape="ff1591d2-9c9d-40ad-bbb3-a3645c37fd2f" glue_point="-1" passive_shape="fb400cbf-db9c-4453-92db-0088ecbb6dd4" connection_point="2"></shape_connection>
+          <shape_connection active_shape="ff1591d2-9c9d-40ad-bbb3-a3645c37fd2f" glue_point="-2" passive_shape="d21cc288-032d-4163-807c-a4e053863d9f" connection_point="7"></shape_connection>
           <shape_connection active_shape="62a2840c-7933-4779-b850-57ddd25bc801" glue_point="-1" passive_shape="b08b98d2-6e87-420c-b8c0-36506b363a9e" connection_point="2"></shape_connection>
           <shape_connection active_shape="62a2840c-7933-4779-b850-57ddd25bc801" glue_point="-2" passive_shape="fb400cbf-db9c-4453-92db-0088ecbb6dd4" connection_point="7"></shape_connection>
           <shape_connection active_shape="313b1e5a-f2e3-4938-8880-1b3005cb1ffb" glue_point="-1" passive_shape="2522c11a-bf50-485f-865b-43ad2209be39" connection_point="2"></shape_connection>
@@ -433,12 +458,6 @@
           <shape_connection active_shape="26428b05-7c1a-4458-89f4-10371748f61a" glue_point="-2" passive_shape="a7e23801-0449-4618-8775-b4190f4a5549" connection_point="0"></shape_connection>
           <shape_connection active_shape="a7e23801-0449-4618-8775-b4190f4a5549" glue_point="-1" passive_shape="26c2f58c-e23a-406e-9974-5100e29d2c42" connection_point="2"></shape_connection>
           <shape_connection active_shape="a7e23801-0449-4618-8775-b4190f4a5549" glue_point="-2" passive_shape="26e4fb6d-d991-4431-b7a8-0d0d00ffd0a6" connection_point="5"></shape_connection>
-          <shape_connection active_shape="a45420fd-5a7c-4412-aaf2-3d4fcaf18bc5" glue_point="-1" passive_shape="41950d1f-f402-46b0-b2a7-9f40bc60759e" connection_point="5"></shape_connection>
-          <shape_connection active_shape="a45420fd-5a7c-4412-aaf2-3d4fcaf18bc5" glue_point="-2" passive_shape="26c2f58c-e23a-406e-9974-5100e29d2c42" connection_point="7"></shape_connection>
-          <shape_connection active_shape="1518b92a-5c83-4e88-9dba-b58c6cd4c849" glue_point="-1" passive_shape="fb400cbf-db9c-4453-92db-0088ecbb6dd4" connection_point="2"></shape_connection>
-          <shape_connection active_shape="1518b92a-5c83-4e88-9dba-b58c6cd4c849" glue_point="-2" passive_shape="41950d1f-f402-46b0-b2a7-9f40bc60759e" connection_point="4"></shape_connection>
-          <shape_connection active_shape="41950d1f-f402-46b0-b2a7-9f40bc60759e" glue_point="-1" passive_shape="ce7ebfbc-a95b-4a90-9b51-e752e700618e" connection_point="2"></shape_connection>
-          <shape_connection active_shape="41950d1f-f402-46b0-b2a7-9f40bc60759e" glue_point="-2" passive_shape="78cfb22e-2a03-43aa-ab59-a6679d7d5695" connection_point="7"></shape_connection>
           <shape_connection active_shape="a04f1323-5f20-4aa0-8c8e-d012b1831371" glue_point="-1" passive_shape="90f7b93b-18f8-43b8-a15c-25f6a477716b" connection_point="3"></shape_connection>
           <shape_connection active_shape="a04f1323-5f20-4aa0-8c8e-d012b1831371" glue_point="-2" passive_shape="1186f2ed-a901-414a-9032-ac1f467c2132" connection_point="7"></shape_connection>
           <shape_connection active_shape="b1c25b91-c954-4864-9245-997871666209" glue_point="-1" passive_shape="90f7b93b-18f8-43b8-a15c-25f6a477716b" connection_point="3"></shape_connection>
@@ -461,16 +480,16 @@
           <shape_connection active_shape="fc3f8346-2768-4543-a35c-e46029ae553a" glue_point="-2" passive_shape="26e4fb6d-d991-4431-b7a8-0d0d00ffd0a6" connection_point="7"></shape_connection>
           <shape_connection active_shape="fd664574-4c37-4711-84fd-861105342b1b" glue_point="-1" passive_shape="058c32f3-4cf9-435e-a0cf-ed284dbf7eb6" connection_point="2"></shape_connection>
           <shape_connection active_shape="fd664574-4c37-4711-84fd-861105342b1b" glue_point="-2" passive_shape="09a45142-4fae-4e63-85df-a60c41c97eb6" connection_point="7"></shape_connection>
+          <shape_connection active_shape="3c6b2ffa-688c-41c8-a461-554b7770e3f1" glue_point="-1" passive_shape="77e2ecc2-3999-491a-8433-e8d3e70b83db" connection_point="2"></shape_connection>
+          <shape_connection active_shape="3c6b2ffa-688c-41c8-a461-554b7770e3f1" glue_point="-2" passive_shape="599a9e78-34fe-4d0a-90ab-434c6b67f0a1" connection_point="7"></shape_connection>
           <shape_connection active_shape="7328f928-aedf-4c0b-9b7c-cadb00c8aaa3" glue_point="-1" passive_shape="5636291d-679b-4430-bb0c-504f8e2dc5a1" connection_point="4"></shape_connection>
           <shape_connection active_shape="7328f928-aedf-4c0b-9b7c-cadb00c8aaa3" glue_point="-2" passive_shape="058c32f3-4cf9-435e-a0cf-ed284dbf7eb6" connection_point="5"></shape_connection>
-          <shape_connection active_shape="699679af-bda3-44b9-93c4-5fb9ec1e4e8a" glue_point="-1" passive_shape="5636291d-679b-4430-bb0c-504f8e2dc5a1" connection_point="2"></shape_connection>
-          <shape_connection active_shape="699679af-bda3-44b9-93c4-5fb9ec1e4e8a" glue_point="-2" passive_shape="1790cba7-2178-4d5c-af54-6e061ba62ae1" connection_point="7"></shape_connection>
           <shape_connection active_shape="ab677d3d-000d-4355-99ec-a6670acbbfaa" glue_point="-1" passive_shape="10432486-8751-4e72-af8b-25f42e67cebb" connection_point="2"></shape_connection>
           <shape_connection active_shape="ab677d3d-000d-4355-99ec-a6670acbbfaa" glue_point="-2" passive_shape="5636291d-679b-4430-bb0c-504f8e2dc5a1" connection_point="7"></shape_connection>
           <shape_connection active_shape="fada8ddd-7533-4384-b792-77764c39c2f4" glue_point="-1" passive_shape="599a9e78-34fe-4d0a-90ab-434c6b67f0a1" connection_point="2"></shape_connection>
           <shape_connection active_shape="fada8ddd-7533-4384-b792-77764c39c2f4" glue_point="-2" passive_shape="10432486-8751-4e72-af8b-25f42e67cebb" connection_point="7"></shape_connection>
-          <shape_connection active_shape="3c6b2ffa-688c-41c8-a461-554b7770e3f1" glue_point="-1" passive_shape="77e2ecc2-3999-491a-8433-e8d3e70b83db" connection_point="2"></shape_connection>
-          <shape_connection active_shape="3c6b2ffa-688c-41c8-a461-554b7770e3f1" glue_point="-2" passive_shape="599a9e78-34fe-4d0a-90ab-434c6b67f0a1" connection_point="7"></shape_connection>
+          <shape_connection active_shape="699679af-bda3-44b9-93c4-5fb9ec1e4e8a" glue_point="-1" passive_shape="5636291d-679b-4430-bb0c-504f8e2dc5a1" connection_point="2"></shape_connection>
+          <shape_connection active_shape="699679af-bda3-44b9-93c4-5fb9ec1e4e8a" glue_point="-2" passive_shape="1790cba7-2178-4d5c-af54-6e061ba62ae1" connection_point="7"></shape_connection>
           <shape_connection active_shape="fc3ce229-02f4-42a0-be28-87dcd1617dfc" glue_point="-1" passive_shape="39399883-8aea-4a65-a308-f637d226166e" connection_point="4"></shape_connection>
           <shape_connection active_shape="fc3ce229-02f4-42a0-be28-87dcd1617dfc" glue_point="-2" passive_shape="5636291d-679b-4430-bb0c-504f8e2dc5a1" connection_point="5"></shape_connection>
         </shape_connections>
