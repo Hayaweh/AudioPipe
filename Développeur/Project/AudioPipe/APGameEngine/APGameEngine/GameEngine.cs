@@ -34,15 +34,11 @@ namespace APGameEngine
 
         GraphicsDeviceManager m_graphicsMngr = null;
         SpriteBatch m_spriteBatch = null;
-        ElementHost m_mainMenuHost = null;
-        UserControls m_userInterface = null;
         GameGenerator m_gameGenerator = null;
         SoundAnalyzer m_soundAnalyzer = null;
 
         string m_gamePhase = null;
         List<string> m_previousGamePhase = null;
-
-        Rectangle m_mainMenuInterfaceHandler;
 
         #endregion
 
@@ -54,6 +50,7 @@ namespace APGameEngine
             Content.RootDirectory = "Content";
             m_graphicsMngr.PreferredBackBufferWidth = 800;
             m_graphicsMngr.PreferredBackBufferHeight = 600;
+            m_gamePhase = "Launch";
         }
 
         #endregion
@@ -71,6 +68,7 @@ namespace APGameEngine
             // TODO: Add your initialization logic here
 
             m_previousGamePhase = new List<string>();
+            m_gamePhase = "Launch";
 
             base.Initialize();
         }
@@ -82,26 +80,25 @@ namespace APGameEngine
         protected override void LoadContent()
         {
 
-            if (m_gamePhase == "launch")
+            if (m_gamePhase == "Launch")
             {
-                // Create a new SpriteBatch, which can be used to draw textures.
-                m_spriteBatch = new SpriteBatch(GraphicsDevice);
-
-                m_mainMenuHost = new ElementHost();
-                m_userInterface = new UserControls();
-
-                m_gamePhase = "main menu";
+                m_gamePhase = "Loading Main Menu";
             }
 
-            if (m_gamePhase == "main menu")
+            if (m_gamePhase == "Loading Main Menu")
             {
-                //Adding interface
-                m_mainMenuHost.Location = new System.Drawing.Point(250, 150);
-                m_mainMenuHost.Size = new Size(300, 300);
-                m_mainMenuHost.Child = m_userInterface;
+                m_gamePhase = "Main Menu";
             }
 
-            
+            if (m_gamePhase == "Loading Music Selector")
+            {
+                m_gamePhase = "Music Selector";
+            }
+
+            if (m_gamePhase == "Loading Settings Menu")
+            {
+                m_gamePhase = "Settings Menu";
+            }
 
             // TODO: use this.Content to load your game content here
 
@@ -123,7 +120,52 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
+            if (m_gamePhase == "Main Menu")
+            {
+                if (/*Play Main Menu*/)
+                {
+                    m_gamePhase = "Loading Music Selector";
+                    LoadContent();
+                }
+                else if (/*Settings Main Menu*/)
+                {
+                    m_gamePhase = "Loading Settings Menu";
+                    LoadContent();
+                }
+                else if (/*Quit Main Menu*/)
+                {
+                    UnloadContent();
+                    Exit();
+                }
+
+                if(/*Settings Menu Save Parameters*/)
+                {
+                    m_gamePhase = "Loading Main Menu";
+                    LoadContent();
+                }
+                else if(/*Settings Menu Discard Parameters*/)
+                {
+                    m_gamePhase = "Loading Main Menu";
+                    LoadContent();
+                }
+
+                if(/*Back Music Selector Menu*/)
+                {
+                    m_gamePhase = "Loading Main Menu";
+                }
+                else if(/*Play Music Selector Menu*/)
+                {
+                    m_gamePhase = "Loading 3D Env";
+                }
+                else if(/*Selec Music Music Selector Menu*/)
+                {
+                    m_gamePhase = "Loading Music Selector";
+                }
+                else if(/*Select Difficulty Music Selector Menu*/)
+                {
+
+                }
+            }
 
             // TODO: Add your update logic here
 
@@ -136,9 +178,29 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Red);
+            GraphicsDevice.Clear(Color.DarkRed);
 
-            
+            if (m_gamePhase == "Launch")
+            {
+                m_gamePhase = "Loading Main Menu";
+                LoadContent();
+            }
+
+            if (m_gamePhase == "Main Menu")
+            {
+                m_spriteBatch.Begin();
+                m_spriteBatch.End();
+            }
+
+            if (m_gamePhase == "Music Selector Menu")
+            {
+
+            }
+
+            if (m_gamePhase == "Settings Menu")
+            {
+
+            }
 
             base.Draw(gameTime);
         }
