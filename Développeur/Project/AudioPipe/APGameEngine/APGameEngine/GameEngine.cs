@@ -14,7 +14,8 @@ using APSoundAnalyzer;
 using System.Windows.Forms.Integration;
 
 using System.Drawing;
-using Color = Microsoft.Xna.Framework.Color;
+using XNAColor = Microsoft.Xna.Framework.Color;
+using DNColor = System.Drawing.Color;
 
 using System.Windows.Forms;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
@@ -39,6 +40,21 @@ namespace APGameEngine
 
         string m_gamePhase = null;
         List<string> m_previousGamePhase = null;
+
+        Main_Menu m_mainMenu = null;
+        ElementHost m_mainMenuHost = null;
+
+        Settings m_settingsMenu = null;
+        ElementHost m_settingsHost = null;
+
+        Game_Menu m_gameMenu = null;
+        ElementHost m_gameMenuHost = null;
+
+        Music_Choice_Menu m_musicChoiceMenu = null;
+        ElementHost m_musicChoiceMenuHost = null;
+
+        Difficulty_Choice_Menu m_difficultyChoiceMenu = null;
+        ElementHost m_difficultyChoiceMenuHost = null;
 
         #endregion
 
@@ -66,6 +82,7 @@ namespace APGameEngine
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            this.IsMouseVisible = true;
 
             m_previousGamePhase = new List<string>();
             m_gamePhase = "Launch";
@@ -79,25 +96,72 @@ namespace APGameEngine
         /// </summary>
         protected override void LoadContent()
         {
+            if(m_gamePhase == "Launch")
+                m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            if (m_gamePhase == "Launch")
+            else if (m_gamePhase == "Loading Main Menu")
             {
-                m_gamePhase = "Loading Main Menu";
-            }
+                if (m_mainMenuHost == null || m_mainMenu == null)
+                {
+                    m_mainMenuHost = new ElementHost();
+                    m_mainMenu = new Main_Menu();
+                    m_mainMenuHost.Location = new System.Drawing.Point(200, 175);
+                    m_mainMenuHost.Size = new Size(400, 250);
+                    m_mainMenuHost.Child = m_mainMenu;
+                }
 
-            if (m_gamePhase == "Loading Main Menu")
-            {
+                m_previousGamePhase.Add(m_gamePhase);
                 m_gamePhase = "Main Menu";
             }
 
-            if (m_gamePhase == "Loading Music Selector")
+            else if (m_gamePhase == "Loading Music Settings Menu")
             {
-                m_gamePhase = "Music Selector";
+                m_previousGamePhase.Add(m_gamePhase);
+                m_gamePhase = "Music Settings Menu";
             }
 
-            if (m_gamePhase == "Loading Settings Menu")
+            else if (m_gamePhase == "Loading Settings Menu")
             {
+                if (m_settingsMenu == null || m_settingsHost == null)
+                {
+                    m_settingsMenu = new Settings();
+                    m_settingsHost = new ElementHost();
+                    m_settingsHost.Location = new System.Drawing.Point(250, 150);
+                    m_settingsHost.Size = new Size(300, 300);
+                    m_settingsHost.Child = m_settingsMenu;
+                }
+               
+                m_previousGamePhase.Add(m_gamePhase);
                 m_gamePhase = "Settings Menu";
+            }
+            else if (m_gamePhase == "Loading Game Menu")
+            {
+                if (m_gameMenu == null || m_gameMenuHost == null)
+                {
+                    m_gameMenu = new Game_Menu();
+                    m_gameMenuHost = new ElementHost();
+                    m_gameMenuHost.Location = new System.Drawing.Point(0,0);
+                    m_gameMenuHost.Size = new Size(800, 100);
+                    m_gameMenuHost.Child = m_gameMenu;
+                }
+
+                m_previousGamePhase.Add(m_gamePhase);
+                m_gamePhase = "Game Menu";
+            }
+            else if (m_gamePhase == "Loading Music Choice Menu")
+            {
+                if (m_musicChoiceMenu == null || m_musicChoiceMenuHost == null)
+                {
+                    m_musicChoiceMenu = new Music_Choice_Menu();
+                    m_musicChoiceMenuHost = new ElementHost();
+                    m_musicChoiceMenuHost.Location = new System.Drawing.Point(0, 100);
+                    m_musicChoiceMenuHost.Size = new Size(800, 600);
+                    m_musicChoiceMenuHost.Child = m_musicChoiceMenu;
+                    m_musicChoiceMenuHost.BackColorTransparent = true;
+                }
+
+                m_previousGamePhase.Add(m_gamePhase);
+                m_gamePhase = "Music Choice Menu";
             }
 
             // TODO: use this.Content to load your game content here
@@ -110,7 +174,23 @@ namespace APGameEngine
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            if (m_gamePhase == "Main Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_mainMenuHost);
+            }
+            else if (m_gamePhase == "Settings Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_settingsHost);
+            }
+            else if (m_gamePhase == "Game Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_gameMenuHost);
+                if(Control.FromHandle(Window.Handle).Controls.Contains(m_musicChoiceMenuHost))
+                    Control.FromHandle(Window.Handle).Controls.Remove(m_musicChoiceMenuHost);
+                if(Control.FromHandle(Window.Handle).Controls.Contains(m_difficultyChoiceMenuHost))
+                    Control.FromHandle(Window.Handle).Controls.Remove(m_difficultyChoiceMenuHost);
+
+            }
         }
 
         /// <summary>
@@ -122,50 +202,60 @@ namespace APGameEngine
         {
             if (m_gamePhase == "Main Menu")
             {
-                if (/*Play Main Menu*/)
+                if (m_mainMenu.playButton.IsPressed)
                 {
-                    m_gamePhase = "Loading Music Selector";
+                    m_previousGamePhase.Add(m_gamePhase);
+                    UnloadContent();
+                    m_gamePhase = "Loading Game Menu";
                     LoadContent();
                 }
-                else if (/*Settings Main Menu*/)
+                else if (m_mainMenu.settingsButton.IsPressed)
                 {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    UnloadContent();
                     m_gamePhase = "Loading Settings Menu";
                     LoadContent();
                 }
-                else if (/*Quit Main Menu*/)
+                else if (m_mainMenu.quitButton.IsPressed)
                 {
                     UnloadContent();
                     Exit();
                 }
-
-                if(/*Settings Menu Save Parameters*/)
+            }
+            else if(m_gamePhase == "Settings Menu")
+            {
+                if(m_settingsMenu.saveParamsButton.IsPressed)
                 {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    UnloadContent();
                     m_gamePhase = "Loading Main Menu";
                     LoadContent();
                 }
-                else if(/*Settings Menu Discard Parameters*/)
+                else if(m_settingsMenu.discardParamsButton.IsPressed)
                 {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    UnloadContent();
                     m_gamePhase = "Loading Main Menu";
                     LoadContent();
-                }
-
-                if(/*Back Music Selector Menu*/)
-                {
-                    m_gamePhase = "Loading Main Menu";
-                }
-                else if(/*Play Music Selector Menu*/)
-                {
-                    m_gamePhase = "Loading 3D Env";
-                }
-                else if(/*Selec Music Music Selector Menu*/)
-                {
-                    m_gamePhase = "Loading Music Selector";
-                }
-                else if(/*Select Difficulty Music Selector Menu*/)
-                {
-
                 }
             }
+            else if (m_gamePhase == "Game Menu")
+            {
+                if (m_gameMenu.backButton.IsPressed)
+                {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    UnloadContent();
+                    m_gamePhase = "Loading Main Menu";
+                    LoadContent();
+                }
+                else if (m_gameMenu.selectMusicButton.IsPressed)
+                {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    m_gamePhase = "Loading Music Choice Menu";
+                    LoadContent();
+                }
+            }
+
 
             // TODO: Add your update logic here
 
@@ -178,28 +268,29 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.DarkRed);
-
             if (m_gamePhase == "Launch")
             {
                 m_gamePhase = "Loading Main Menu";
+                m_previousGamePhase.Add(m_gamePhase);
                 LoadContent();
             }
 
             if (m_gamePhase == "Main Menu")
             {
-                m_spriteBatch.Begin();
-                m_spriteBatch.End();
+                Control.FromHandle(Window.Handle).Controls.Add(m_mainMenuHost);
             }
-
-            if (m_gamePhase == "Music Selector Menu")
+            else if (m_gamePhase == "Settings Menu")
             {
-
+                Control.FromHandle(Window.Handle).Controls.Add(m_settingsHost);
             }
-
-            if (m_gamePhase == "Settings Menu")
+            else if (m_gamePhase == "Game Menu")
             {
-
+                Control.FromHandle(Window.Handle).Controls.Add(m_gameMenuHost);
+            }
+            else if (m_gamePhase == "Music Choice Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Add(m_musicChoiceMenuHost);
+                m_musicChoiceMenuHost.BringToFront();
             }
 
             base.Draw(gameTime);

@@ -117,10 +117,26 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Difficulty Choice Menu.xaml.cs">
+      <DependentUpon>Difficulty Choice Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Game Menu.xaml.cs">
+      <DependentUpon>Game Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameEngine.cs" />
+    <Compile Include="Main Menu.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>Main Menu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Music Choice Menu.xaml.cs">
+      <DependentUpon>Music Choice Menu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +180,27 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Difficulty Choice Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Game Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Main Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Music Choice Menu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <dataweb_nshape version="4">
-  <project id="eb10fab7-7074-4cae-8b3f-95c090cdaf86" last_saved_utc="2012-11-06 12:26:59">
+  <project id="eb10fab7-7074-4cae-8b3f-95c090cdaf86" last_saved_utc="2012-11-06 14:18:42">
     <libraries>
       <library name="GeneralShapes" assembly_name="Dataweb.NShape.GeneralShapes, Version=2.0.2.0, Culture=neutral, PublicKeyToken=1512080cd664963c" repository_version="4" />
     </libraries>
@@ -189,7 +189,7 @@
       </template>
     </templates>
     <diagrams>
-      <diagram id="0ea0fffa-41cd-460e-87b0-2f5a8290442e" name="Diagram 1" title="" security_domain="A" width="794" height="1123" background_color="-657931" background_gradient_end_color="-1" background_image_file_name="" background_image="" image_layout="0" image_gamma="1" image_transparency="0" image_gray_scale="False" image_transparent_color="0">
+      <diagram id="0ea0fffa-41cd-460e-87b0-2f5a8290442e" name="Diagram 1" title="" security_domain="A" width="794" height="1123" background_color="-4144960" background_gradient_end_color="-2894893" background_image_file_name="" background_image="" image_layout="0" image_gamma="1" image_transparency="0" image_gray_scale="False" image_transparent_color="-65536">
         <layers />
         <shapes>
           <box id="77e2ecc2-3999-491a-8433-e8d3e70b83db" template="5cbc19b9-47d4-4bcc-a739-ac3966ea5f2c" model_object="00000000-0000-0000-0000-000000000000" x="540" y="1080" z_order="10" layers="0" security_domain_name="A" line_style="00000000-0000-0000-0000-000000000000" angle="0" fill_style="00000000-0000-0000-0000-000000000000" character_style="00000000-0000-0000-0000-000000000000" paragraph_style="00000000-0000-0000-0000-000000000000" text="Launch" width="100" height="50"></box>
