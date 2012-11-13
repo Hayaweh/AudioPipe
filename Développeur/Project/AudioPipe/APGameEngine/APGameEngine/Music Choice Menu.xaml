@@ -13,8 +13,8 @@
             </LinearGradientBrush>
         </Grid.Background>
         <TreeView x:Name="TreeView" HorizontalAlignment="Left" Margin="25,-50,0,0" VerticalAlignment="Center" Width="400" Height="400"/>
-        <Label Content="Artist" HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="300"/>
-        <Label x:Name="Artist" Content="Name" HorizontalAlignment="Left" Margin="460,75,0,0" VerticalAlignment="Top" Width="300"/>
+        <Label Content="Artist" HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold"/>
+        <Label x:Name="Artist"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,75,0,0" VerticalAlignment="Top" Width="300"/>
 
     </Grid>
 </UserControl>
