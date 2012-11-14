@@ -23,6 +23,7 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+using System.Windows.Input;
 
 namespace APGameEngine
 {
@@ -184,12 +185,15 @@ namespace APGameEngine
             }
             else if (m_gamePhase == "Game Menu")
             {
-                Control.FromHandle(Window.Handle).Controls.Remove(m_gameMenuHost);
-                if(Control.FromHandle(Window.Handle).Controls.Contains(m_musicChoiceMenuHost))
-                    Control.FromHandle(Window.Handle).Controls.Remove(m_musicChoiceMenuHost);
-                if(Control.FromHandle(Window.Handle).Controls.Contains(m_difficultyChoiceMenuHost))
-                    Control.FromHandle(Window.Handle).Controls.Remove(m_difficultyChoiceMenuHost);
-
+                Control.FromHandle(Window.Handle).Controls.Remove(m_gameMenuHost);                   
+            }
+            else if (m_gamePhase == "Unloading Music Choice Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_musicChoiceMenuHost);
+            }
+            else if (m_gamePhase == "Unloading Difficulty Choice Menu")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_difficultyChoiceMenuHost);
             }
         }
 
@@ -254,6 +258,31 @@ namespace APGameEngine
                     m_gamePhase = "Loading Music Choice Menu";
                     LoadContent();
                 }
+            }
+            else if(m_gamePhase == "Music Choice Menu")
+            {
+                m_gameMenu.backButton.IsEnabled = false;
+
+                if (m_musicChoiceMenu.SaveMusicSelectionButton.IsPressed)
+                {
+                    m_gamePhase = "Unloading Music Choice Menu";
+                    UnloadContent();
+                    m_gamePhase = "Game Menu";
+                    m_gameMenu.backButton.IsEnabled = true;
+                }
+                else if (m_musicChoiceMenu.DiscardMusicSelectionMusic.IsPressed)
+                {
+                    m_gamePhase = "Unloading Music Choice Menu";
+                    UnloadContent();
+                    m_gamePhase = "Game Menu";
+                    m_gameMenu.backButton.IsEnabled = true;
+                }
+            }
+            else if(m_gamePhase == "Difficulty Choice Menu")
+            {
+                m_gameMenu.backButton.IsEnabled = false;
+
+
             }
 
 
