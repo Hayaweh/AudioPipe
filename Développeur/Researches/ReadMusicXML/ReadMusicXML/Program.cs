@@ -36,7 +36,7 @@ namespace ReadMusicXML
 
             Console.WriteLine("* Récupération des informations du fichier : enfants \"part\" (PRESS ENTER)\n");
                 int countParentNode = 0;
-                int countChildrenNode = 0;/*
+                int countChildrenNode = 0;
                 foreach (XmlNode node1 in doc.DocumentElement.ChildNodes)
                 {
                     if (node1.Name != "work" && node1.Name != "movement-title" && node1.Name != "identification" && node1.Name != "part-list")
@@ -88,10 +88,10 @@ namespace ReadMusicXML
                 }
                 Console.WriteLine("\nNombre de noeud parents lu : " + countParentNode);
                 Console.WriteLine("Nombre de noeud enfants lu : " + countChildrenNode);
-                Console.WriteLine("Nombre de noeud enfants lu par noeud parents : " + countChildrenNode / countParentNode);*/
+                Console.WriteLine("Nombre de noeud enfants lu par noeud parents : " + countChildrenNode / countParentNode);
             Console.ReadLine();
 
-            Console.WriteLine("* Enregistrement des données dans des tableaux pour transfert de données (PRESS ENTER)\n");
+          /*  Console.WriteLine("* Enregistrement des données dans des tableaux pour transfert de données (PRESS ENTER)\n");
                 Dictionary<string, XmlNode> MusicXml = new Dictionary<string, XmlNode>();
                 Dictionary<string, XmlNode> MusicXmlNode1 = new Dictionary<string, XmlNode>();
 
@@ -129,6 +129,7 @@ namespace ReadMusicXML
                     MusicXmlNode1.Add(node1.Name, null);
                 }
                 MusicXml.Add("part", MusicXmlNode1);
+           * */
 
                 Console.WriteLine(" -- Done");
             Console.ReadLine();

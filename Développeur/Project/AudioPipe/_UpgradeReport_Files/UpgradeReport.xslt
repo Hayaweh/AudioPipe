@@ -1,23 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl='urn:schemas-microsoft-com:xslt'>
-  <xsl:output omit-xml-declaration="yes" />
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:msxsl="urn:schemas-microsoft-com:xslt">
+  <xsl:output omit-xml-declaration="yes"/>
 
   <!-- Keys -->
-  <xsl:key name="ProjectKey" match="Event" use="@Project" />
+  <xsl:key name="ProjectKey" match="Event" use="@Project"/>
 
   <!-- String split template -->
   <xsl:template name="SplitString">
-    <xsl:param name="source"      select="''" />
-    <xsl:param name="separator" select="','" />
+    <xsl:param name="source" select="''"/>
+    <xsl:param name="separator" select="','"/>
     <xsl:if test="not($source = '' or $separator = '')">
-      <xsl:variable name="head" select="substring-before(concat($source, $separator), $separator)" />
-      <xsl:variable name="tail" select="substring-after($source, $separator)" />
+      <xsl:variable name="head" select="substring-before(concat($source, $separator), $separator)"/>
+      <xsl:variable name="tail" select="substring-after($source, $separator)"/>
       <part>
         <xsl:value-of select="$head"/>
       </part>
       <xsl:call-template name="SplitString">
-        <xsl:with-param name="source" select="$tail" />
-        <xsl:with-param name="separator" select="$separator" />
+        <xsl:with-param name="source" select="$tail"/>
+        <xsl:with-param name="separator" select="$separator"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
@@ -27,10 +27,10 @@
     <Projects>
       <xsl:for-each select="Event[generate-id(.) = generate-id(key('ProjectKey', @Project))]">
         <Project>
-          <xsl:variable name="pNode" select="current()" />
-          <xsl:variable name="errorCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=2])" />
-          <xsl:variable name="warningCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=1])" />
-          <xsl:variable name="messageCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=0])" />
+          <xsl:variable name="pNode" select="current()"/>
+          <xsl:variable name="errorCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=2])"/>
+          <xsl:variable name="warningCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=1])"/>
+          <xsl:variable name="messageCount" select="count(../Event[@Project = current()/@Project and @ErrorLevel=0])"/>
           <xsl:variable name="pathSplitSeparator">
             <xsl:text>\</xsl:text>
           </xsl:variable>
@@ -50,20 +50,20 @@
           </xsl:attribute>
           <xsl:attribute name="ProjectDisplayName">
 
-            <xsl:variable name="localProjectName" select="@Project" />
+            <xsl:variable name="localProjectName" select="@Project"/>
 
             <!-- Sometimes it is possible to have project name set to a path over a real project name,
                  we split the string on '\' and if we end up with >1 part in the resulting tokens set
                  we format the ProjectDisplayName as ..\prior\last -->
             <xsl:variable name="pathTokens">
               <xsl:call-template name="SplitString">
-                <xsl:with-param name="source" select="$localProjectName" />
-                <xsl:with-param name="separator" select="$pathSplitSeparator" />
+                <xsl:with-param name="source" select="$localProjectName"/>
+                <xsl:with-param name="separator" select="$pathSplitSeparator"/>
               </xsl:call-template>
             </xsl:variable>
 
             <xsl:choose>
-              <xsl:when test="count(msxsl:node-set($pathTokens)/part) > 1">
+              <xsl:when test="count(msxsl:node-set($pathTokens)/part) &gt; 1">
                 <xsl:value-of select="concat('..', $pathSplitSeparator, msxsl:node-set($pathTokens)/part[last() - 1], $pathSplitSeparator, msxsl:node-set($pathTokens)/part[last()])"/>
               </xsl:when>
               <xsl:otherwise>
@@ -83,19 +83,19 @@
           </xsl:attribute>
           <xsl:attribute name="Status">
             <xsl:choose>
-              <xsl:when test="$errorCount > 0">Error</xsl:when>
-              <xsl:when test="$warningCount > 0">Warning</xsl:when>
+              <xsl:when test="$errorCount &gt; 0">Error</xsl:when>
+              <xsl:when test="$warningCount &gt; 0">Warning</xsl:when>
               <xsl:otherwise>Success</xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
           <xsl:attribute name="ErrorCount">
-            <xsl:value-of select="$errorCount" />
+            <xsl:value-of select="$errorCount"/>
           </xsl:attribute>
           <xsl:attribute name="WarningCount">
-            <xsl:value-of select="$warningCount" />
+            <xsl:value-of select="$warningCount"/>
           </xsl:attribute>
           <xsl:attribute name="MessageCount">
-            <xsl:value-of select="$messageCount" />
+            <xsl:value-of select="$messageCount"/>
           </xsl:attribute>
           <xsl:attribute name="TotalCount">
             <xsl:value-of select="$errorCount + $warningCount + $messageCount"/>
@@ -109,7 +109,7 @@
             <xsl:for-each select="../Event[@Project = $pNode/@Project and @ErrorLevel&lt;3]">
               <Message>
                 <xsl:attribute name="Level">
-                  <xsl:value-of select="@ErrorLevel" />
+                  <xsl:value-of select="@ErrorLevel"/>
                 </xsl:attribute>
                 <xsl:attribute name="Status">
                   <xsl:choose>
@@ -141,20 +141,20 @@
     <table>
       <tr>
         <th></th>
-        <th _locID="ProjectTableHeader">Project</th>
-        <th _locID="PathTableHeader">Path</th>
-        <th _locID="ErrorsTableHeader">Errors</th>
-        <th _locID="WarningsTableHeader">Warnings</th>
+        <th _locID="ProjectTableHeader">Projet</th>
+        <th _locID="PathTableHeader">Chemin d'accès</th>
+        <th _locID="ErrorsTableHeader">Erreurs</th>
+        <th _locID="WarningsTableHeader">Avertissements</th>
         <th _locID="MessagesTableHeader">Messages</th>
       </tr>
 
       <xsl:for-each select="Project">
 
-        <xsl:sort select="@ErrorCount" order="descending" />
-        <xsl:sort select="@WarningCount" order="descending" />
+        <xsl:sort select="@ErrorCount" order="descending"/>
+        <xsl:sort select="@WarningCount" order="descending"/>
         <!-- Always make solution last within a group -->
-        <xsl:sort select="@IsSolution" order="ascending" />
-        <xsl:sort select="@ProjectSafeName" order="ascending" />
+        <xsl:sort select="@IsSolution" order="ascending"/>
+        <xsl:sort select="@ProjectSafeName" order="ascending"/>
 
         <tr>
           <td>
@@ -167,7 +167,7 @@
                 </xsl:choose>
               </xsl:attribute>
               <xsl:attribute name="alt">
-                <xsl:value-of select="@Status" />
+                <xsl:value-of select="@Status"/>
               </xsl:attribute>
             </img>
           </td>
@@ -182,47 +182,47 @@
                     <span _locID="OverviewSolutionSpan">Solution</span>
                   </xsl:when>
                   <xsl:otherwise>
-                    <xsl:value-of select="@ProjectDisplayName" />
+                    <xsl:value-of select="@ProjectDisplayName"/>
                   </xsl:otherwise>
                 </xsl:choose>
               </a>
             </strong>
           </td>
           <td>
-            <xsl:value-of select="@Source" />
+            <xsl:value-of select="@Source"/>
           </td>
           <td class="textCentered">
             <a>
-              <xsl:if test="@ErrorCount > 0">
+              <xsl:if test="@ErrorCount &gt; 0">
                 <xsl:attribute name="href">
                   <xsl:value-of select="concat('#', @ProjectSafeName, 'Error')"/>
                 </xsl:attribute>
               </xsl:if>
-              <xsl:value-of select="@ErrorCount" />
+              <xsl:value-of select="@ErrorCount"/>
             </a>
           </td>
           <td class="textCentered">
             <a>
-              <xsl:if test="@WarningCount > 0">
+              <xsl:if test="@WarningCount &gt; 0">
                 <xsl:attribute name="href">
                   <xsl:value-of select="concat('#', @ProjectSafeName, 'Warning')"/>
                 </xsl:attribute>
               </xsl:if>
-              <xsl:value-of select="@WarningCount" />
+              <xsl:value-of select="@WarningCount"/>
             </a>
           </td>
           <td class="textCentered">
             <a href="#">
-              <xsl:if test="@MessageCount > 0">
+              <xsl:if test="@MessageCount &gt; 0">
                 <xsl:attribute name="onclick">
                   <xsl:variable name="apos">
                     <xsl:text>'</xsl:text>
                   </xsl:variable>
-                  <xsl:variable name="JS" select="concat('ScrollToFirstVisibleMessage(', $apos, @ProjectSafeName, $apos, ')')" />
+                  <xsl:variable name="JS" select="concat('ScrollToFirstVisibleMessage(', $apos, @ProjectSafeName, $apos, ')')"/>
                   <xsl:value-of select="concat($JS, '; return false;')"/>
                 </xsl:attribute>
               </xsl:if>
-              <xsl:value-of select="@MessageCount" />
+              <xsl:value-of select="@MessageCount"/>
             </a>
           </td>
         </tr>
@@ -237,13 +237,13 @@
         <xsl:value-of select="concat('MessageRowHeaderShow', @ProjectSafeName)"/>
       </xsl:attribute>
       <td>
-        <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png" />
+        <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png"/>
       </td>
       <td class="messageCell">
         <xsl:variable name="apos">
           <xsl:text>'</xsl:text>
         </xsl:variable>
-        <xsl:variable name="toggleRowsJS" select="concat('ToggleMessageVisibility(', $apos, @ProjectSafeName, $apos, ')')" />
+        <xsl:variable name="toggleRowsJS" select="concat('ToggleMessageVisibility(', $apos, @ProjectSafeName, $apos, ')')"/>
 
         <a _locID="ShowAdditionalMessages" href="#">
           <xsl:attribute name="name">
@@ -252,7 +252,7 @@
           <xsl:attribute name="onclick">
             <xsl:value-of select="concat($toggleRowsJS, '; return false;')"/>
           </xsl:attribute>
-          Show <xsl:value-of select="@MessageCount" /> additional messages
+          Afficher <xsl:value-of select="@MessageCount"/> messages supplémentaires
         </a>
       </td>
     </tr>
@@ -265,13 +265,13 @@
         <xsl:value-of select="concat('MessageRowHeaderHide', @ProjectSafeName)"/>
       </xsl:attribute>
       <td>
-        <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png" />
+        <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png"/>
       </td>
       <td class="messageCell">
         <xsl:variable name="apos">
           <xsl:text>'</xsl:text>
         </xsl:variable>
-        <xsl:variable name="toggleRowsJS" select="concat('ToggleMessageVisibility(', $apos, @ProjectSafeName, $apos, ')')" />
+        <xsl:variable name="toggleRowsJS" select="concat('ToggleMessageVisibility(', $apos, @ProjectSafeName, $apos, ')')"/>
 
         <a _locID="HideAdditionalMessages" href="#">
           <xsl:attribute name="name">
@@ -280,7 +280,7 @@
           <xsl:attribute name="onclick">
             <xsl:value-of select="concat($toggleRowsJS, '; return false;')"/>
           </xsl:attribute>
-          Hide <xsl:value-of select="@MessageCount" /> additional messages
+          Masquer <xsl:value-of select="@MessageCount"/> messages supplémentaires
         </a>
       </td>
     </tr>
@@ -311,7 +311,7 @@
             </xsl:choose>
           </xsl:attribute>
           <xsl:attribute name="alt">
-            <xsl:value-of select="@Status" />
+            <xsl:value-of select="@Status"/>
           </xsl:attribute>
         </img>
       </td>
@@ -330,11 +330,11 @@
   <xsl:template match="Projects" mode="ProjectDetails">
 
     <xsl:for-each select="Project">
-      <xsl:sort select="@ErrorCount" order="descending" />
-      <xsl:sort select="@WarningCount" order="descending" />
+      <xsl:sort select="@ErrorCount" order="descending"/>
+      <xsl:sort select="@WarningCount" order="descending"/>
       <!-- Always make solution last within a group -->
-      <xsl:sort select="@IsSolution" order="ascending" />
-      <xsl:sort select="@ProjectSafeName" order="ascending" />
+      <xsl:sort select="@IsSolution" order="ascending"/>
+      <xsl:sort select="@ProjectSafeName" order="ascending"/>
 
       <a>
         <xsl:attribute name="name">
@@ -363,39 +363,39 @@
 
         <!-- Errors and warnings -->
         <xsl:for-each select="Messages/Message[@Level &gt; 0]">
-          <xsl:sort select="@Level" order="descending" />
-          <xsl:apply-templates select="." />
+          <xsl:sort select="@Level" order="descending"/>
+          <xsl:apply-templates select="."/>
         </xsl:for-each>
 
-        <xsl:if test="@MessageCount > 0">
-          <xsl:apply-templates select="." mode="ProjectShowMessages" />
+        <xsl:if test="@MessageCount &gt; 0">
+          <xsl:apply-templates select="." mode="ProjectShowMessages"/>
         </xsl:if>
 
         <!-- Messages -->
         <xsl:for-each select="Messages/Message[@Level = 0]">
-          <xsl:apply-templates select="." />
+          <xsl:apply-templates select="."/>
         </xsl:for-each>
 
         <xsl:choose>
           <!-- Additional row as a 'place holder' for 'Show/Hide' additional messages -->
-          <xsl:when test="@MessageCount > 0">
-            <xsl:apply-templates select="." mode="ProjectHideMessages" />
+          <xsl:when test="@MessageCount &gt; 0">
+            <xsl:apply-templates select="." mode="ProjectHideMessages"/>
           </xsl:when>
           <!-- No messages at all, show blank row -->
           <xsl:when test="@TotalCount = 0">
             <tr>
               <td>
-                <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png" />
+                <img width="16" height="16" src="_UpgradeReport_Files\UpgradeReport_Information.png"/>
               </td>
               <xsl:choose>
                 <xsl:when test="@ProjectDisplayName = ''">
                   <td class="messageCell" _locID="NoMessagesRow2">
-                    Solution logged no messages.
+                    La solution n'a consigné aucun message dans le journal.
                   </td>
                 </xsl:when>
                 <xsl:otherwise>
                   <td class="messageCell" _locID="NoMessagesRow">
-                    <xsl:value-of select="@ProjectDisplayName" /> logged no messages.
+                    <xsl:value-of select="@ProjectDisplayName"/> n'a consigné aucun message dans le journal.
                   </td>
                 </xsl:otherwise>
               </xsl:choose>
@@ -416,11 +416,11 @@
     </xsl:text>
     <html>
       <head>
-        <meta content="en-us" http-equiv="Content-Language" />
-        <meta content="text/html; charset=utf-16" http-equiv="Content-Type" />
-        <link type="text/css" rel="stylesheet" href="_UpgradeReport_Files\UpgradeReport.css" />
+        <meta content="en-us" http-equiv="Content-Language"/>
+        <meta content="text/html; charset=utf-16" http-equiv="Content-Type"/>
+        <link type="text/css" rel="stylesheet" href="_UpgradeReport_Files\UpgradeReport.css"/>
         <title _locID="ConversionReport0">
-          Migration Report
+          Rapport de migration
         </title>
 
         <script type="text/javascript" language="javascript">
@@ -532,23 +532,23 @@
       </head>
       <body>
         <h1 _locID="ConversionReport">
-          Migration Report - <xsl:value-of select="Properties/Property[@Name='Solution']/@Value"/>
+          Rapport de migration - <xsl:value-of select="Properties/Property[@Name='Solution']/@Value"/>
         </h1>
 
         <div id="content">
-          <h2 _locID="OverviewTitle">Overview</h2>
+          <h2 _locID="OverviewTitle">Vue d'ensemble</h2>
           <xsl:variable name="projectOverview">
-            <xsl:apply-templates select="self::node()" mode="ProjectOverviewXML" />
+            <xsl:apply-templates select="self::node()" mode="ProjectOverviewXML"/>
           </xsl:variable>
 
           <div id="overview">
-            <xsl:apply-templates select="msxsl:node-set($projectOverview)/*" mode="ProjectOverview" />
+            <xsl:apply-templates select="msxsl:node-set($projectOverview)/*" mode="ProjectOverview"/>
           </div>
 
-          <h2 _locID="SolutionAndProjectsTitle">Solution and projects</h2>
+          <h2 _locID="SolutionAndProjectsTitle">Solution et projets</h2>
 
           <div id="messages">
-            <xsl:apply-templates select="msxsl:node-set($projectOverview)/*" mode="ProjectDetails" />
+            <xsl:apply-templates select="msxsl:node-set($projectOverview)/*" mode="ProjectDetails"/>
           </div>
         </div>
       </body>
