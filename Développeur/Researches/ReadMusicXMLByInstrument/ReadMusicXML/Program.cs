@@ -27,8 +27,11 @@ namespace ReadMusicXML
             string instrument = OpenXmlDocument(@"C:\Users\Lu'Juju\Documents\AudioPipe\XML\Dragonforce-My_Spirit_Will_Go_On.xml", doc);
 
             Console.WriteLine("\n\t====== Parsing selon l'instrument ======");
-            TakeData( "p"+instrument, doc );
+            TakeData("p" + instrument, doc);
             Console.WriteLine("\t             (ENTRER)              ");
+            Console.ReadLine();
+
+            Console.WriteLine("\t====== Done ======");
             Console.ReadLine();
         }
 
@@ -74,16 +77,24 @@ namespace ReadMusicXML
         /// Take the data from instrument who was select                                                        // TO DO : return array of data
         /// </summary>
         /// <param name="instrument">Number of the instrument</param>
+        /// <param name="doc">Xml document load</param>
         static void TakeData(string instrument, XmlDocument doc)
         {
+            //SortedDictionary<string, string> dictionary = new SortedDictionary<string, string>();
+
             foreach (XmlNode node1 in doc.DocumentElement.ChildNodes)
             {
+                int j = 0;
+                int i = 0;
+                int x = 0;
+
                 if (node1.Name == "part" && node1.Attributes["id"].Value == instrument)
                 {
                     Console.WriteLine("  <" + node1.Name + " id=" + node1.Attributes["id"].Value + ">");
                     foreach (XmlNode node2 in node1.ChildNodes)
                     {
                         Console.WriteLine("    <" + node2.Name + " number=" + node2.Attributes["number"].Value + ">");
+                        Data n1 = new Data(node1.Name, node2.Name);
                         foreach (XmlNode node3 in node2.ChildNodes)
                         {
                             Console.WriteLine("      <" + node3.Name + ">");
@@ -93,20 +104,30 @@ namespace ReadMusicXML
                                 foreach (XmlNode node5 in node4.ChildNodes)
                                 {
                                     if (node5.Value != null)
+                                    {
+                                        //dictionary.Add(node2.Name + node2.Attributes["number"].Value + ";" + node3.Name+x + ";" + node4.Name, node5.Value);
                                         Console.WriteLine("          " + node5.Value);
+                                        x++;
+                                    }
                                     else
                                     {
                                         Console.WriteLine("          <" + node5.Name + ">");
                                         foreach (XmlNode node6 in node5.ChildNodes)
                                         {
                                             if (node6.Value != null)
+                                            {
+                                                //dictionary.Add(node2.Name + node2.Attributes["number"].Value + ";" + node3.Name+x + ";" + node4.Name + i + ";" + node5.Name, node6.Value);
                                                 Console.WriteLine("            " + node6.Value);
+                                                i++;
+                                            }
                                             else
                                             {
                                                 Console.WriteLine("            <" + node6.Name + ">");
                                                 foreach (XmlNode node7 in node6.ChildNodes)
                                                 {
+                                                    //dictionary.Add(node2.Name + node2.Attributes["number"].Value + ";" + node3.Name+x + ";" + node4.Name+i + ";" + node5.Name+j + ";" + node6.Name + j, node7.Value);
                                                     Console.WriteLine("              " + node7.Value);
+                                                    j++;
                                                 }
                                                 Console.WriteLine("            </" + node6.Name + ">");
                                             }
