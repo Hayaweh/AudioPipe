@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPipe", "AudioPipe\AudioPipe.csproj", "{E03CE2A7-630B-41B7-B9D5-B73E942E4A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APSoundAnalyzer", "APSoundAnalyzer\APSoundAnalyzer.csproj", "{B6D55FCD-CF42-4331-9D5E-E69169FD1D46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APXMLAnalyzer", "APSoundAnalyzer\APXMLAnalyzer.csproj", "{B6D55FCD-CF42-4331-9D5E-E69169FD1D46}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APGameGenerator", "APGameGenerator\APGameGenerator.csproj", "{7FB1670C-377F-4A54-90A6-4A5BF50682B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APSoundAnalyzer_Test", "APSoundAnalyzer_Test\APSoundAnalyzer_Test.csproj", "{732F6509-8891-4FB9-83F1-F3C1B85EA31E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APXMLAnalyzer-test", "APSoundAnalyzer_Test\APXMLAnalyzer-test.csproj", "{732F6509-8891-4FB9-83F1-F3C1B85EA31E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APGameGenerator_Test", "APGameGenerator_Test\APGameGenerator_Test.csproj", "{DDC58E2A-D8B4-4549-8FC9-CE6F132BF5A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APGameEngine", "APGameEngine\APGameEngine\APGameEngine.csproj", "{BC82D7C1-17AF-4671-8B15-0E6C2C71539E}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "APGameEngineContent", "APGameEngine\APGameEngineContent\APGameEngineContent.contentproj", "{7AB8C563-B7AA-448F-900B-C72EC2C32E03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APGameEngineContent", "APGameEngine\APGameEngineContent\APGameEngineContent.contentproj", "{7AB8C563-B7AA-448F-900B-C72EC2C32E03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

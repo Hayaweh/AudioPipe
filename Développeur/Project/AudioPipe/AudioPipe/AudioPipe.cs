@@ -16,7 +16,7 @@ namespace AudioPipe
         {
             GameEngine game = new GameEngine();
             GameGenerator generator = new GameGenerator();
-            SoundAnalyzer analyzer = new SoundAnalyzer();
+            XMLAnalyzer analyzer = new XMLAnalyzer();
             game.setGameGenerator(generator);
             game.setSoundAnalyzer(analyzer);
             game.Run();

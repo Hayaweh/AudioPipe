@@ -13,14 +13,14 @@
             </LinearGradientBrush>
         </Grid.Background>
         <TreeView x:Name="TreeView" HorizontalAlignment="Left" Margin="25,25,0,0" VerticalAlignment="Top" Width="400" Height="450"/>
-        <Label Content="Artist" HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold"/>
-        <Label x:Name="ArtistLabel"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,75,0,0" VerticalAlignment="Top" Width="300"/>
+        <Label Content="Artist" HorizontalAlignment="Left" Margin="460,50,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label x:Name="ArtistLabel"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,75,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
         <Label Content="Album" HorizontalAlignment="Left" Margin="460,100
-               ,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold"/>
+               ,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
         <Label x:Name="AlbumLabel"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,125
-               ,0,0" VerticalAlignment="Top" Width="300"/>
-        <Label Content="Song" HorizontalAlignment="Left" Margin="460,150,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold"/>
-        <Label x:Name="SongLabel"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,175,0,0" VerticalAlignment="Top" Width="300"/>
+               ,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
+        <Label Content="Song" HorizontalAlignment="Left" Margin="460,150,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label x:Name="SongLabel"  Content="Name" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,175,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
         <Button x:Name="SaveMusicSelectionButton" Content="Save" HorizontalAlignment="Left" Margin="640,460,0,0" VerticalAlignment="Top" Width="100" Height="25" FontFamily="Pericles" FontSize="14" ClickMode="Press">
             <Button.Background>
                 <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
@@ -41,6 +41,14 @@
                 </LinearGradientBrush>
             </Button.Background>
         </Button>
+        <ComboBox x:Name="PartitionComboBox" HorizontalAlignment="Left" Margin="490,299,0,0" VerticalAlignment="Top" Width="250"/>
+        <Label Content="Partition" HorizontalAlignment="Left" Margin="460,268,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label Content="Note Number" HorizontalAlignment="Left" Margin="460,326,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label x:Name="PartitionNoteNumber" Content="Label" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,357,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
+        <Label Content="Note Fluency" HorizontalAlignment="Left" Margin="460,388,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label x:Name="PartitionNoteFluency" Content="Label" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,419,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
+        <Label Content="Duration" HorizontalAlignment="Left" Margin="460,206,0,0" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontFamily="Pericles"/>
+        <Label x:Name="SongDuration" Content="Label" HorizontalContentAlignment="Right" HorizontalAlignment="Left" Margin="460,237,0,0" VerticalAlignment="Top" Width="300" FontFamily="Pericles"/>
 
     </Grid>
 </UserControl>
