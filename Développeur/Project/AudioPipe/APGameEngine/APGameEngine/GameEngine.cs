@@ -34,20 +34,42 @@ namespace APGameEngine
     {
         #region Properties
 
+        //Declaration of graphic manager and SpriteBatch
         GraphicsDeviceManager m_graphicsMngr = null;
         SpriteBatch m_spriteBatch = null;
+
+        //Creation of the 3D render matrices
+        Matrix m_view;
+        Matrix m_projection;
+        Matrix m_world;
+
+        //Set up of the camera
+        Vector3 m_cameraPosition = new Vector3(0.0f, 0.0f, 0.0f);
+        Vector3 m_cameraTarget = new Vector3(0.0f, 0.0f, 0.0f);
+        Vector3 m_cameraUp = Vector3.Up;
+
+        //Set up of visual effects (shaders)
+        BasicEffect m_basicEffect = null;
+
+        //Set up of 3D Menues Background
+        Model m_mazda = null;
+        float m_angleRotation = 0;
+
+        //Set up of the external modules for analysis and generation
         GameGenerator m_gameGenerator = null;
         SoundAnalyzer m_soundAnalyzer = null;
 
+        //Set up of the game phasis system
         string m_gamePhase = null;
         List<string> m_previousGamePhase = null;
 
+        //Set up of the menues
         Main_Menu m_mainMenu = null;
         ElementHost m_mainMenuHost = null;
-
+        
         Settings m_settingsMenu = null;
         ElementHost m_settingsHost = null;
-
+        
         Game_Menu m_gameMenu = null;
         ElementHost m_gameMenuHost = null;
 
@@ -82,11 +104,14 @@ namespace APGameEngine
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             this.IsMouseVisible = true;
 
             m_previousGamePhase = new List<string>();
             m_gamePhase = "Launch";
+
+            m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
+            m_projection = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver2, this.GraphicsDevice.Viewport.AspectRatio, 0.01f, 10000.0f);
+            m_world = Matrix.Identity;
 
             base.Initialize();
         }
@@ -97,9 +122,15 @@ namespace APGameEngine
         /// </summary>
         protected override void LoadContent()
         {
-            if(m_gamePhase == "Launch")
+            if (m_gamePhase == "Launch")
+            {
                 m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
+                //Shader attribution
+                m_basicEffect = new BasicEffect(this.GraphicsDevice);
+                m_mazda = Content.Load<Model>("Mazda");
+            }
+            //Loadings of menues
             else if (m_gamePhase == "Loading Main Menu")
             {
                 if (m_mainMenuHost == null || m_mainMenu == null)
@@ -131,7 +162,7 @@ namespace APGameEngine
                     m_settingsHost.Size = new Size(300, 300);
                     m_settingsHost.Child = m_settingsMenu;
                 }
-               
+
                 m_previousGamePhase.Add(m_gamePhase);
                 m_gamePhase = "Settings Menu";
             }
@@ -141,7 +172,7 @@ namespace APGameEngine
                 {
                     m_gameMenu = new Game_Menu();
                     m_gameMenuHost = new ElementHost();
-                    m_gameMenuHost.Location = new System.Drawing.Point(0,0);
+                    m_gameMenuHost.Location = new System.Drawing.Point(0, 0);
                     m_gameMenuHost.Size = new Size(800, 100);
                     m_gameMenuHost.Child = m_gameMenu;
                 }
@@ -164,9 +195,22 @@ namespace APGameEngine
                 m_previousGamePhase.Add(m_gamePhase);
                 m_gamePhase = "Music Choice Menu";
             }
-
-            // TODO: use this.Content to load your game content here
-
+            else if (m_gamePhase == "Loading Difficulty Choice Menu")
+            {
+                if (m_difficultyChoiceMenu == null || m_difficultyChoiceMenuHost == null)
+                {
+                    m_difficultyChoiceMenu = new Difficulty_Choice_Menu();
+                    m_difficultyChoiceMenuHost = new ElementHost();
+                    m_difficultyChoiceMenuHost.Location = new System.Drawing.Point(0, 100);
+                    m_difficultyChoiceMenuHost.Size = new Size(800, 600);
+                    m_difficultyChoiceMenuHost.Child = m_difficultyChoiceMenu;
+                    m_difficultyChoiceMenuHost.BackColorTransparent = true;
+                }
+            }
+            else if (m_gamePhase == "Loading Game")
+            {
+                UnloadContent();
+            }
         }
 
         /// <summary>
@@ -175,6 +219,7 @@ namespace APGameEngine
         /// </summary>
         protected override void UnloadContent()
         {
+            //Removing menues from visuals
             if (m_gamePhase == "Main Menu")
             {
                 Control.FromHandle(Window.Handle).Controls.Remove(m_mainMenuHost);
@@ -195,6 +240,10 @@ namespace APGameEngine
             {
                 Control.FromHandle(Window.Handle).Controls.Remove(m_difficultyChoiceMenuHost);
             }
+            else if (m_gamePhase == "Loading Game")
+            {
+                Control.FromHandle(Window.Handle).Controls.Remove(m_gameMenuHost);
+            }
         }
 
         /// <summary>
@@ -204,6 +253,24 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            if (m_gamePhase != "Play")
+            {
+                m_cameraTarget = m_mazda.Root.Transform.Translation - m_mazda.Root.Transform.Translation/2;
+                m_angleRotation += 0.75f;
+
+                if (m_angleRotation >= 360)
+                    m_angleRotation = 0;
+
+                double RadianAngle = MathHelper.ToRadians(m_angleRotation);
+                float x = ((float)Math.Sin(RadianAngle)*500);
+                float z = ((float)Math.Cos(RadianAngle)*500);
+
+                m_cameraPosition = new Vector3(x * 2.5f + m_cameraTarget.X, 500,z * 2.5f + m_cameraTarget.Z);
+                m_cameraUp = new Vector3(0, 1, 0);
+                m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
+            }
+
+            //Control of the interface
             if (m_gamePhase == "Main Menu")
             {
                 if (m_mainMenu.playButton.IsPressed)
@@ -258,10 +325,23 @@ namespace APGameEngine
                     m_gamePhase = "Loading Music Choice Menu";
                     LoadContent();
                 }
+                else if (m_gameMenu.selectDifficultyButton.IsPressed)
+                {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    m_gamePhase = "Loading Difficulty Choice Menu";
+                    LoadContent();
+                }
+                else if (m_gameMenu.playButton.IsPressed)
+                {
+                    m_previousGamePhase.Add(m_gamePhase);
+                    m_gamePhase = "Loading Game";
+                    LoadContent();
+                }
             }
             else if(m_gamePhase == "Music Choice Menu")
             {
                 m_gameMenu.backButton.IsEnabled = false;
+                m_gameMenu.playButton.IsEnabled = false;
 
                 if (m_musicChoiceMenu.SaveMusicSelectionButton.IsPressed)
                 {
@@ -269,6 +349,7 @@ namespace APGameEngine
                     UnloadContent();
                     m_gamePhase = "Game Menu";
                     m_gameMenu.backButton.IsEnabled = true;
+                    m_gameMenu.playButton.IsEnabled = true;
                 }
                 else if (m_musicChoiceMenu.DiscardMusicSelectionMusic.IsPressed)
                 {
@@ -276,17 +357,23 @@ namespace APGameEngine
                     UnloadContent();
                     m_gamePhase = "Game Menu";
                     m_gameMenu.backButton.IsEnabled = true;
+                    m_gameMenu.playButton.IsEnabled = true;
                 }
             }
             else if(m_gamePhase == "Difficulty Choice Menu")
             {
                 m_gameMenu.backButton.IsEnabled = false;
+                m_gameMenu.playButton.IsEnabled = false;
 
-
+                if (m_difficultyChoiceMenu.easyButton.IsPressed)
+                {
+                    m_gamePhase = "Unloading Difficulty Choice Menu";
+                    UnloadContent();
+                    m_gamePhase = "Game Menu";
+                    m_gameMenu.backButton.IsEnabled = true;
+                    m_gameMenu.playButton.IsEnabled = true;
+                }
             }
-
-
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
@@ -297,6 +384,20 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(XNAColor.CornflowerBlue);
+
+           foreach (ModelMesh mesh in m_mazda.Meshes)
+            {
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.World = Matrix.Identity;
+                    effect.View = m_view;
+                    effect.Projection = m_projection;
+                    mesh.Draw();
+                }
+            }
+
+            //Start game
             if (m_gamePhase == "Launch")
             {
                 m_gamePhase = "Loading Main Menu";
@@ -304,6 +405,7 @@ namespace APGameEngine
                 LoadContent();
             }
 
+            //Showing menues
             if (m_gamePhase == "Main Menu")
             {
                 Control.FromHandle(Window.Handle).Controls.Add(m_mainMenuHost);
