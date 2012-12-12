@@ -151,13 +151,14 @@
       <Project>{7fb1670c-377f-4a54-90a6-4a5bf50682b4}</Project>
       <Name>APGameGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\APSoundAnalyzer\APSoundAnalyzer.csproj">
+    <ProjectReference Include="..\..\APSoundAnalyzer\APXMLAnalyzer.csproj">
       <Project>{b6d55fcd-cf42-4331-9d5e-e69169fd1d46}</Project>
-      <Name>APSoundAnalyzer</Name>
+      <Name>APXMLAnalyzer</Name>
     </ProjectReference>
     <ProjectReference Include="..\APGameEngineContent\APGameEngineContent.contentproj">
-      <Name>APGameEngineContent</Name>
+      <Name>APGameEngineContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{7AB8C563-B7AA-448F-900B-C72EC2C32E03}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

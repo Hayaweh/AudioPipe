@@ -78,9 +78,9 @@
       <Project>{7fb1670c-377f-4a54-90a6-4a5bf50682b4}</Project>
       <Name>APGameGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\APSoundAnalyzer\APSoundAnalyzer.csproj">
+    <ProjectReference Include="..\APSoundAnalyzer\APXMLAnalyzer.csproj">
       <Project>{b6d55fcd-cf42-4331-9d5e-e69169fd1d46}</Project>
-      <Name>APSoundAnalyzer</Name>
+      <Name>APXMLAnalyzer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
