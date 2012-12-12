@@ -460,6 +460,28 @@ namespace APGameEngine
                 return false;
         }
 
+        /// <summary>
+        /// Create a pipe of a specified lenght with 10 subdivisions
+        /// </summary>
+        /// <param name="lenght">int: Lenght of the pipe</param>
+        /// <returns>VertexPositionColor[]</returns>
+        public VertexPositionColor[] createPipe(int lenght)
+        {
+            VertexPositionColor[] pipe = new VertexPositionColor[sizeof(UInt64)];
+
+            UInt64 pipeDataArrayAccessIndex = 0;
+
+            for (int i = 0; i < lenght; i++)
+            {
+                do
+                {
+
+                } while (pipeDataArrayAccessIndex % 10 != 0);
+            }
+
+            return pipe;
+        }
+
         #endregion
     }
 }
