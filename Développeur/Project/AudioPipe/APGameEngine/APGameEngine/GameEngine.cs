@@ -57,7 +57,7 @@ namespace APGameEngine
 
         //Set up of the external modules for analysis and generation
         GameGenerator m_gameGenerator = null;
-        SoundAnalyzer m_soundAnalyzer = null;
+        XMLAnalyzer m_xmlAnalyzer = null;
 
         //Set up of the game phasis system
         string m_gamePhase = null;
@@ -210,6 +210,7 @@ namespace APGameEngine
             else if (m_gamePhase == "Loading Game")
             {
                 UnloadContent();
+
             }
         }
 
@@ -445,15 +446,15 @@ namespace APGameEngine
                 return false;
         }
 
-        public SoundAnalyzer getSoundAnalyzer()
+        public XMLAnalyzer getSoundAnalyzer()
         {
-            return m_soundAnalyzer;
+            return m_xmlAnalyzer;
         }
 
-        public bool setSoundAnalyzer(SoundAnalyzer soundAnalyzer)
+        public bool setSoundAnalyzer(XMLAnalyzer xmlAnalyzer)
         {
-            m_soundAnalyzer = soundAnalyzer;
-            if (m_soundAnalyzer == soundAnalyzer)
+            m_xmlAnalyzer = xmlAnalyzer;
+            if (m_xmlAnalyzer == xmlAnalyzer)
                 return true;
             else
                 return false;
