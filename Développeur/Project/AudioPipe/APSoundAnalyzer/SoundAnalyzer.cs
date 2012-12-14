@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
 using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 #region Autor. How to use?
 /*
@@ -69,15 +70,15 @@ namespace APSoundAnalyzer
         /// <summary>
         /// Analyse XML file and take data with XPath class
         /// </summary>
-        /// <param name="filename">(string) Filename of the XML file</param>
+        /// <param name="path">(string) Filename of the XML file</param>
         /// <param name="xNodeName">(string) XPath syntaxe (example : http://msdn.microsoft.com/fr-fr/library/ms256086%28v=VS.80%29.aspx) </param>
         /// <returns>(list) Return a list of string from data selected by xNodeName</returns>
-        static List<string> TakeData(string filename, string xNodeName)
+        static List<string> TakeData(string path, string xNodeName)
         {
             List<string> myList = new List<string>();
             try
             {
-                XPathDocument xPathDoc = new XPathDocument(filename);
+                XPathDocument xPathDoc = new XPathDocument(path);
                 XPathNavigator xPathNav = xPathDoc.CreateNavigator();
                 XPathExpression xExp;
                 xExp = xPathNav.Compile(xNodeName);
@@ -110,16 +111,16 @@ namespace APSoundAnalyzer
         /// <summary>
         /// Analyse XML file and take data with XPath class
         /// </summary>
-        /// <param name="filename">(string) Filename of the XML file</param>
+        /// <param name="path">(string) Filename of the XML file</param>
         /// <param name="xNodeName">(string) XPath syntaxe (example : http://msdn.microsoft.com/fr-fr/library/ms256086%28v=VS.80%29.aspx) </param>
         /// <param name="count">(bool) TRUE if we want use this function like the other</param>
         /// <returns>(int) Return a int of string from data selected by xNodeName</returns>
-        static int TakeData(string filename, string xNodeName, bool count)
+        static int TakeData(string path, string xNodeName, bool count)
         {
             int var = 0;
             try
             {
-                XPathDocument xPathDoc = new XPathDocument(filename);
+                XPathDocument xPathDoc = new XPathDocument(path);
                 XPathNavigator xPathNav = xPathDoc.CreateNavigator();
                 XPathExpression xExp;
                 xExp = xPathNav.Compile(xNodeName);
@@ -143,6 +144,20 @@ namespace APSoundAnalyzer
                 Console.WriteLine("Erreur : {0}.", ex.Message);
             }
             return var;
+        }
+
+        #endregion
+
+        #region GetMusicDuration
+
+        /// <summary>
+        /// Return the duration from the music file was selected
+        /// </summary>
+        /// <param name="song">Song object from song's filename</param>
+        /// <returns>Timespan of music's duration</returns>
+        public static TimeSpan GetMusicDuration(Song song)
+        {
+            return song.Duration;
         }
 
         #endregion
