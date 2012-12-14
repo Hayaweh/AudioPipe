@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.XPath;
+using Microsoft.Xna.Framework.Audio;
 
 #region Autor. How to use?
 /*
