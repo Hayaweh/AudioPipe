@@ -22,7 +22,8 @@ using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
-using Keys = Microsoft.Xna.Framework.Input.Keys;
+using XNAKeys = Microsoft.Xna.Framework.Input.Keys;
+using XNAMouse = Microsoft.Xna.Framework.Input.Mouse;
 using System.Windows.Input;
 
 namespace APGameEngine
@@ -50,6 +51,12 @@ namespace APGameEngine
 
         //Set up of visual effects (shaders)
         BasicEffect m_basicEffect = null;
+        VertexPositionColor[] m_gamePipe = null;
+        VertexBuffer m_pipeVertexBuffer = null;
+        int[] m_gamePipeIndices = null;
+        IndexBuffer m_pipeIndicesBuffer = null;
+        //List<object> m_modelsList = null;
+
 
         //Set up of 3D Menues Background
         Model m_mazda = null;
@@ -78,6 +85,10 @@ namespace APGameEngine
 
         Difficulty_Choice_Menu m_difficultyChoiceMenu = null;
         ElementHost m_difficultyChoiceMenuHost = null;
+
+        //Setting up the Inputs
+        MouseState m_oldMouseState;
+        MouseState m_actualMouseState;
 
         #endregion
 
@@ -133,6 +144,7 @@ namespace APGameEngine
             //Loadings of menues
             else if (m_gamePhase == "Loading Main Menu")
             {
+                XNAMouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
                 if (m_mainMenuHost == null || m_mainMenu == null)
                 {
                     m_mainMenuHost = new ElementHost();
@@ -206,11 +218,30 @@ namespace APGameEngine
                     m_difficultyChoiceMenuHost.Child = m_difficultyChoiceMenu;
                     m_difficultyChoiceMenuHost.BackColorTransparent = true;
                 }
+
+                m_previousGamePhase.Add(m_gamePhase);
+                m_gamePhase = "Difficulty Choice Menu";
             }
             else if (m_gamePhase == "Loading Game")
             {
                 UnloadContent();
 
+                m_gamePipe = createPipe(20000);
+                m_gamePipeIndices = createFaceIndexes(m_gamePipe);
+                m_pipeVertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_gamePipe.Length, BufferUsage.WriteOnly);
+                m_pipeVertexBuffer.SetData(m_gamePipe);
+                GraphicsDevice.SetVertexBuffer(m_pipeVertexBuffer);
+                m_pipeIndicesBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_gamePipeIndices.Length, BufferUsage.WriteOnly);
+                m_pipeIndicesBuffer.SetData(m_gamePipeIndices);
+                GraphicsDevice.Indices = m_pipeIndicesBuffer;
+
+                m_cameraTarget = new Vector3(0, 0, 20000);
+                m_cameraPosition = new Vector3(0, -50, -500);
+                m_cameraUp = Vector3.Up;
+                m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
+
+                m_previousGamePhase.Add(m_gamePhase);
+                m_gamePhase = "Playing Game";
             }
         }
 
@@ -244,6 +275,7 @@ namespace APGameEngine
             else if (m_gamePhase == "Loading Game")
             {
                 Control.FromHandle(Window.Handle).Controls.Remove(m_gameMenuHost);
+                Content.Unload();
             }
         }
 
@@ -254,9 +286,11 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (m_gamePhase != "Play")
+            m_actualMouseState = XNAMouse.GetState();
+
+            if (m_gamePhase != "Playing Game")
             {
-                m_cameraTarget = m_mazda.Root.Transform.Translation - m_mazda.Root.Transform.Translation/2;
+                m_cameraTarget = m_mazda.Root.Transform.Translation - 2*(m_mazda.Root.Transform.Translation/3);
                 m_angleRotation += 0.75f;
 
                 if (m_angleRotation >= 360)
@@ -270,6 +304,28 @@ namespace APGameEngine
                 m_cameraUp = new Vector3(0, 1, 0);
                 m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
             }
+            else if (m_gamePhase == "Playing Game")
+            {
+                if (m_oldMouseState != m_actualMouseState)
+                {
+                    float xRotation = MathHelper.Pi;
+                    const float rotationSpeed = 0.005f;
+
+                    float xDiff = m_actualMouseState.X - m_oldMouseState.X;
+                    xRotation -= rotationSpeed * xDiff;
+
+                    Matrix cameraRotation = Matrix.CreateRotationZ(xRotation);
+
+                    m_cameraUp = Vector3.Transform(m_cameraUp, cameraRotation);
+                    m_cameraPosition = Vector3.Transform(m_cameraPosition, cameraRotation);
+                    m_cameraTarget = Vector3.Transform(m_cameraTarget, cameraRotation);
+                }
+
+                m_cameraPosition.Z += 20000/ (30.0f * 60.0f);
+                m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
+            }
+
+            m_oldMouseState = m_actualMouseState;
 
             //Control of the interface
             if (m_gamePhase == "Main Menu")
@@ -385,18 +441,7 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(XNAColor.CornflowerBlue);
-
-           foreach (ModelMesh mesh in m_mazda.Meshes)
-            {
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.World = Matrix.Identity;
-                    effect.View = m_view;
-                    effect.Projection = m_projection;
-                    mesh.Draw();
-                }
-            }
+            #region Launch
 
             //Start game
             if (m_gamePhase == "Launch")
@@ -405,6 +450,47 @@ namespace APGameEngine
                 m_previousGamePhase.Add(m_gamePhase);
                 LoadContent();
             }
+
+            #endregion
+
+            #region 3D Drawing
+
+            //Drawing 3D
+            if (m_gamePhase != "Playing Game")
+            {
+                GraphicsDevice.Clear(XNAColor.CornflowerBlue);
+
+                foreach (ModelMesh mesh in m_mazda.Meshes)
+                {
+                    foreach (BasicEffect effect in mesh.Effects)
+                    {
+                        effect.World = Matrix.Identity;
+                        effect.View = m_view;
+                        effect.Projection = m_projection;
+                        mesh.Draw();
+                    }
+                }
+            }
+            else if (m_gamePhase == "Playing Game")
+            {
+                GraphicsDevice.Clear(XNAColor.Black);
+
+                m_basicEffect.View = m_view;
+                m_basicEffect.Projection = m_projection;
+                m_basicEffect.World = m_world;
+                m_basicEffect.VertexColorEnabled = true;
+
+                foreach(EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
+                {
+                    pass.Apply();
+                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, m_gamePipe.Length/2, 0, m_gamePipeIndices.Length/6);
+                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, m_gamePipe.Length / 2, m_gamePipe.Length / 2, m_gamePipeIndices.Length / 6, m_gamePipeIndices.Length / 6);
+                }
+            }
+
+            #endregion
+
+            #region Menus Drawing
 
             //Showing menues
             if (m_gamePhase == "Main Menu")
@@ -424,6 +510,8 @@ namespace APGameEngine
                 Control.FromHandle(Window.Handle).Controls.Add(m_musicChoiceMenuHost);
                 m_musicChoiceMenuHost.BringToFront();
             }
+
+            #endregion
 
             base.Draw(gameTime);
         }
@@ -467,19 +555,55 @@ namespace APGameEngine
         /// <returns>VertexPositionColor[]</returns>
         public VertexPositionColor[] createPipe(int lenght)
         {
-            VertexPositionColor[] pipe = new VertexPositionColor[sizeof(UInt64)];
+            VertexPositionColor[] pipe = new VertexPositionColor[lenght*6*20];
 
-            UInt64 pipeDataArrayAccessIndex = 0;
+            int pipeDataArrayAccessIndex = 0;
+            double angle = MathHelper.ToRadians(36.0f);
 
             for (int i = 0; i < lenght; i++)
             {
                 do
                 {
-
+                    createFace(pipe, pipeDataArrayAccessIndex, angle, pipeDataArrayAccessIndex % 10, i);
+                    
+                    pipeDataArrayAccessIndex++;
                 } while (pipeDataArrayAccessIndex % 10 != 0);
             }
 
             return pipe;
+        }
+
+        private VertexPositionColor[] createFace(VertexPositionColor[] pipe, int pipeDataArrayAccessIndex, double angle, int angleMultiplier, int lenght)
+        {
+            pipe[pipeDataArrayAccessIndex] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier*angle), 100*(float)Math.Sin(angleMultiplier*angle), lenght), XNAColor.LightGreen);
+            pipe[pipeDataArrayAccessIndex + 1] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier+1 * angle), 100*(float)Math.Sin(angleMultiplier+1 * angle), lenght), XNAColor.Green);
+            pipe[pipeDataArrayAccessIndex + 2] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier * angle), 100*(float)Math.Sin(angleMultiplier * angle), lenght+1), XNAColor.Green);
+            pipe[pipeDataArrayAccessIndex + 3] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier+1 * angle), 100*(float)Math.Sin(angleMultiplier+1 * angle), lenght + 1), XNAColor.Green);
+
+            return pipe;
+        }
+
+        public int[] createFaceIndexes(VertexPositionColor[] pipe)
+        {
+            int[] indexArray = new int[pipe.Length + pipe.Length/3];
+
+            int pipeDataArrayAccessIndex = 0;
+
+            for (int i = 0; i < indexArray.Length - 6; i++)
+            {
+                indexArray[i++] = pipeDataArrayAccessIndex;
+                pipeDataArrayAccessIndex++;
+                indexArray[i++] = pipeDataArrayAccessIndex;
+                pipeDataArrayAccessIndex++;
+                indexArray[i++] = pipeDataArrayAccessIndex;
+                indexArray[i++] = pipeDataArrayAccessIndex;
+                pipeDataArrayAccessIndex++;
+                indexArray[i++] = pipeDataArrayAccessIndex;
+                pipeDataArrayAccessIndex -= 2;
+                indexArray[i] = pipeDataArrayAccessIndex;
+            }
+
+            return indexArray;
         }
 
         #endregion
