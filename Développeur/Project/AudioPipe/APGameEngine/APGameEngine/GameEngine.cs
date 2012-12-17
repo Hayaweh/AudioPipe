@@ -24,6 +24,7 @@ using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 using XNAKeys = Microsoft.Xna.Framework.Input.Keys;
 using XNAMouse = Microsoft.Xna.Framework.Input.Mouse;
+using XNAKeyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using System.Windows.Input;
 
 namespace APGameEngine
@@ -51,10 +52,14 @@ namespace APGameEngine
 
         //Set up of visual effects (shaders)
         BasicEffect m_basicEffect = null;
-        VertexPositionColor[] m_gamePipe = null;
-        VertexBuffer m_pipeVertexBuffer = null;
+        VertexPositionColor[] m_gamePipeVertices = null;
+        VertexBuffer m_gamePipeVerticeBuffer = null;
         int[] m_gamePipeIndices = null;
-        IndexBuffer m_pipeIndicesBuffer = null;
+        IndexBuffer m_gamePipeIndiceBuffer = null;
+        VertexPositionColor[] m_linesVertices = null;
+        VertexBuffer m_linesVerticesBuffer = null;
+        int[] m_linesIndices = null;
+        IndexBuffer m_linesIndicesBuffer = null;
         //List<object> m_modelsList = null;
 
 
@@ -89,6 +94,7 @@ namespace APGameEngine
         //Setting up the Inputs
         MouseState m_oldMouseState;
         MouseState m_actualMouseState;
+        KeyboardState m_keyboardState;
 
         #endregion
 
@@ -226,18 +232,39 @@ namespace APGameEngine
             {
                 UnloadContent();
 
-                m_gamePipe = createPipe(20000);
-                m_gamePipeIndices = createFaceIndexes(m_gamePipe);
-                m_pipeVertexBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_gamePipe.Length, BufferUsage.WriteOnly);
-                m_pipeVertexBuffer.SetData(m_gamePipe);
-                GraphicsDevice.SetVertexBuffer(m_pipeVertexBuffer);
-                m_pipeIndicesBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_gamePipeIndices.Length, BufferUsage.WriteOnly);
-                m_pipeIndicesBuffer.SetData(m_gamePipeIndices);
-                GraphicsDevice.Indices = m_pipeIndicesBuffer;
+                int divisions = 20, lenght = 200, step = 15;
+                float radius = 40.0f;
 
-                m_cameraTarget = new Vector3(0, 0, 20000);
-                m_cameraPosition = new Vector3(0, -50, -500);
+                //3D objects
+                m_gamePipeVertices = createPipeVertices(lenght, radius, divisions, step, XNAColor.Red);
+                m_gamePipeIndices = createPipeIndicesBuffer(m_gamePipeVertices, divisions);
+
+                m_gamePipeVerticeBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_gamePipeVertices.Length, BufferUsage.WriteOnly);
+                m_gamePipeVerticeBuffer.SetData(m_gamePipeVertices);
+                GraphicsDevice.SetVertexBuffer(m_gamePipeVerticeBuffer);
+
+                m_gamePipeIndiceBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_gamePipeIndices.Length, BufferUsage.WriteOnly);
+                m_gamePipeIndiceBuffer.SetData(m_gamePipeIndices);
+                GraphicsDevice.Indices = m_gamePipeIndiceBuffer;
+
+                m_linesVertices = createPipeVertices(lenght, radius - 0.5f, 20, step, XNAColor.Black);
+                m_linesIndices = createLinesIndicesBuffer(m_linesVertices, divisions, lenght);
+
+                m_linesVerticesBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_linesVertices.Length, BufferUsage.WriteOnly);
+                m_linesVerticesBuffer.SetData(m_linesVertices);
+                GraphicsDevice.SetVertexBuffer(m_linesVerticesBuffer);
+
+                m_linesIndicesBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_linesIndices.Length, BufferUsage.WriteOnly);
+                m_linesIndicesBuffer.SetData(m_linesIndices);
+
+                //Camera
+                m_cameraTarget = new Vector3(0, -((radius-1)/2), lenght*step);
+                m_cameraPosition = new Vector3(0, -((radius - 1) / 2), 0);
                 m_cameraUp = Vector3.Up;
+
+                m_basicEffect.FogStart = m_cameraPosition.Z + 50;
+                m_basicEffect.FogEnd = m_cameraPosition.Z + 300;
+
                 m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
 
                 m_previousGamePhase.Add(m_gamePhase);
@@ -287,6 +314,7 @@ namespace APGameEngine
         protected override void Update(GameTime gameTime)
         {
             m_actualMouseState = XNAMouse.GetState();
+            m_keyboardState = XNAKeyboard.GetState();
 
             if (m_gamePhase != "Playing Game")
             {
@@ -321,7 +349,11 @@ namespace APGameEngine
                     m_cameraTarget = Vector3.Transform(m_cameraTarget, cameraRotation);
                 }
 
-                m_cameraPosition.Z += 20000/ (30.0f * 60.0f);
+                if(m_keyboardState.IsKeyDown(XNAKeys.S))
+                    m_cameraPosition.Z -= 2000/ (30.0f * 60.0f);
+                else if(m_keyboardState.IsKeyDown(XNAKeys.Z))
+                    m_cameraPosition.Z += 2000 / (30.0f * 60.0f);
+
                 m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
             }
 
@@ -473,18 +505,25 @@ namespace APGameEngine
             }
             else if (m_gamePhase == "Playing Game")
             {
-                GraphicsDevice.Clear(XNAColor.Black);
+                GraphicsDevice.Clear(XNAColor.White);
 
                 m_basicEffect.View = m_view;
                 m_basicEffect.Projection = m_projection;
                 m_basicEffect.World = m_world;
                 m_basicEffect.VertexColorEnabled = true;
 
+                m_basicEffect.FogEnabled = true;
+                m_basicEffect.VertexColorEnabled = true;
+
                 foreach(EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
                 {
                     pass.Apply();
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, m_gamePipe.Length/2, 0, m_gamePipeIndices.Length/6);
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, m_gamePipe.Length / 2, m_gamePipe.Length / 2, m_gamePipeIndices.Length / 6, m_gamePipeIndices.Length / 6);
+                    GraphicsDevice.SetVertexBuffer(m_gamePipeVerticeBuffer);
+                    GraphicsDevice.Indices = m_gamePipeIndiceBuffer;
+                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, m_gamePipeVertices.Length, 0, m_gamePipeIndices.Length/3);
+                    GraphicsDevice.SetVertexBuffer(m_linesVerticesBuffer);
+                    GraphicsDevice.Indices = m_linesIndicesBuffer;
+                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, m_linesVertices.Length, 0, m_linesIndices.Length / 2);
                 }
             }
 
@@ -551,59 +590,83 @@ namespace APGameEngine
         /// <summary>
         /// Create a pipe of a specified lenght with 10 subdivisions
         /// </summary>
-        /// <param name="lenght">int: Lenght of the pipe</param>
+        /// <param name="lenght">int: Number of repetitions of the pipe</param>
         /// <returns>VertexPositionColor[]</returns>
-        public VertexPositionColor[] createPipe(int lenght)
+        public VertexPositionColor[] createPipeVertices(int lenght, float radius, int divisions, int step, XNAColor color)
         {
-            VertexPositionColor[] pipe = new VertexPositionColor[lenght*6*20];
+            VertexPositionColor[] pipeVerticesArray = new VertexPositionColor[(divisions*lenght)+divisions];
 
             int pipeDataArrayAccessIndex = 0;
-            double angle = MathHelper.ToRadians(36.0f);
+            double angle = MathHelper.ToRadians(360.0f/divisions);
 
-            for (int i = 0; i < lenght; i++)
+            for (int i = 0; i <= lenght; i ++)
             {
-                do
+                for (int j = 0; j < divisions; j++)
                 {
-                    createFace(pipe, pipeDataArrayAccessIndex, angle, pipeDataArrayAccessIndex % 10, i);
-                    
+                    createPoint(pipeVerticesArray, pipeDataArrayAccessIndex, radius, angle, j, i*step, color);
                     pipeDataArrayAccessIndex++;
-                } while (pipeDataArrayAccessIndex % 10 != 0);
+                }
             }
 
-            return pipe;
+            return pipeVerticesArray;
         }
 
-        private VertexPositionColor[] createFace(VertexPositionColor[] pipe, int pipeDataArrayAccessIndex, double angle, int angleMultiplier, int lenght)
+        private void createPoint(VertexPositionColor[] pipe, int pipeDataArrayAccessIndex, float radius, double angle, int angleMultiplier, int lenght, XNAColor color)
         {
-            pipe[pipeDataArrayAccessIndex] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier*angle), 100*(float)Math.Sin(angleMultiplier*angle), lenght), XNAColor.LightGreen);
-            pipe[pipeDataArrayAccessIndex + 1] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier+1 * angle), 100*(float)Math.Sin(angleMultiplier+1 * angle), lenght), XNAColor.Green);
-            pipe[pipeDataArrayAccessIndex + 2] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier * angle), 100*(float)Math.Sin(angleMultiplier * angle), lenght+1), XNAColor.Green);
-            pipe[pipeDataArrayAccessIndex + 3] = new VertexPositionColor(new Vector3(100*(float)Math.Cos(angleMultiplier+1 * angle), 100*(float)Math.Sin(angleMultiplier+1 * angle), lenght + 1), XNAColor.Green);
-
-            return pipe;
+            pipe[pipeDataArrayAccessIndex] = new VertexPositionColor(new Vector3(radius*(float)Math.Cos(angleMultiplier*angle), radius*(float)Math.Sin(angleMultiplier*angle), lenght), color);
         }
 
-        public int[] createFaceIndexes(VertexPositionColor[] pipe)
+        private int[] createPipeIndicesBuffer(VertexPositionColor[] pipe, int divisions)
         {
-            int[] indexArray = new int[pipe.Length + pipe.Length/3];
+            int[] indicesBuffer = new int[pipe.Length * 6 - (6*divisions)];
 
-            int pipeDataArrayAccessIndex = 0;
+            int index = 0;
 
-            for (int i = 0; i < indexArray.Length - 6; i++)
+            for (int i = 0; i < pipe.Length - divisions; i ++)
             {
-                indexArray[i++] = pipeDataArrayAccessIndex;
-                pipeDataArrayAccessIndex++;
-                indexArray[i++] = pipeDataArrayAccessIndex;
-                pipeDataArrayAccessIndex++;
-                indexArray[i++] = pipeDataArrayAccessIndex;
-                indexArray[i++] = pipeDataArrayAccessIndex;
-                pipeDataArrayAccessIndex++;
-                indexArray[i++] = pipeDataArrayAccessIndex;
-                pipeDataArrayAccessIndex -= 2;
-                indexArray[i] = pipeDataArrayAccessIndex;
+                if (i % divisions != 19)
+                {
+                    indicesBuffer[index] = i + divisions;
+                    indicesBuffer[++index] = i;
+                    indicesBuffer[++index] = i + 1;
+                    indicesBuffer[++index] = i + divisions;
+                    indicesBuffer[++index] = i + 1;
+                    indicesBuffer[++index] = i + divisions + 1;
+                    index++;
+                }
+                else
+                {
+                    indicesBuffer[index] = i + divisions;
+                    indicesBuffer[++index] = i;
+                    indicesBuffer[++index] = i - divisions + 1;
+                    indicesBuffer[++index] = i + divisions;
+                    indicesBuffer[++index] = i - divisions + 1;
+                    indicesBuffer[++index] = i + 1;
+                    index++;
+                }
             }
 
-            return indexArray;
+            return indicesBuffer;
+        }
+
+        private int[] createLinesIndicesBuffer(VertexPositionColor[] lines, int divisions, int lenght)
+        {
+            int [] indicesBuffer = new int[lines.Length*2];
+
+            int indexAccess = 0;
+
+            for(int i = 0; i < divisions; i++)
+            {
+                for (int j = 0; j < lenght; j ++)
+                {
+                    indicesBuffer[indexAccess] = j*divisions + i;
+                    indexAccess++;
+                    indicesBuffer[indexAccess] = (j+1) * divisions + i;
+                    indexAccess++;
+                }
+            }
+
+            return indicesBuffer;
         }
 
         #endregion
