@@ -44,6 +44,7 @@ namespace APGameEngine
         Matrix m_view;
         Matrix m_projection;
         Matrix m_world;
+        int m_fps = 60;
 
         //Set up of the camera
         Vector3 m_cameraPosition = new Vector3(0.0f, 0.0f, 0.0f);
@@ -52,16 +53,10 @@ namespace APGameEngine
 
         //Set up of visual effects (shaders)
         BasicEffect m_basicEffect = null;
-        VertexPositionColor[] m_gamePipeVertices = null;
-        VertexBuffer m_gamePipeVerticeBuffer = null;
-        int[] m_gamePipeIndices = null;
-        IndexBuffer m_gamePipeIndiceBuffer = null;
-        VertexPositionColor[] m_linesVertices = null;
-        VertexBuffer m_linesVerticesBuffer = null;
-        int[] m_linesIndices = null;
-        IndexBuffer m_linesIndicesBuffer = null;
-        //List<object> m_modelsList = null;
 
+        //Set up of 3D models
+        Dictionary<string, Object> m_modelList = new Dictionary<string, Object>();
+        Pipe m_pipe = null;
 
         //Set up of 3D Menues Background
         Model m_mazda = null;
@@ -95,6 +90,7 @@ namespace APGameEngine
         MouseState m_oldMouseState;
         MouseState m_actualMouseState;
         KeyboardState m_keyboardState;
+        bool m_WindowsStateIsActive = false;
 
         #endregion
 
@@ -144,13 +140,14 @@ namespace APGameEngine
                 m_spriteBatch = new SpriteBatch(GraphicsDevice);
 
                 //Shader attribution
-                m_basicEffect = new BasicEffect(this.GraphicsDevice);
+                m_basicEffect = new BasicEffect(GraphicsDevice);
                 m_mazda = Content.Load<Model>("Mazda");
+
+                XNAMouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
             }
             //Loadings of menues
             else if (m_gamePhase == "Loading Main Menu")
             {
-                XNAMouse.SetPosition(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
                 if (m_mainMenuHost == null || m_mainMenu == null)
                 {
                     m_mainMenuHost = new ElementHost();
@@ -232,34 +229,16 @@ namespace APGameEngine
             {
                 UnloadContent();
 
-                int divisions = 20, lenght = 200, step = 15;
-                float radius = 40.0f;
+                int divisions = 20, lenght = 2000, step = 2;
+                float radius = 150.0f;
 
                 //3D objects
-                m_gamePipeVertices = createPipeVertices(lenght, radius, divisions, step, XNAColor.Red);
-                m_gamePipeIndices = createPipeIndicesBuffer(m_gamePipeVertices, divisions);
-
-                m_gamePipeVerticeBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_gamePipeVertices.Length, BufferUsage.WriteOnly);
-                m_gamePipeVerticeBuffer.SetData(m_gamePipeVertices);
-                GraphicsDevice.SetVertexBuffer(m_gamePipeVerticeBuffer);
-
-                m_gamePipeIndiceBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_gamePipeIndices.Length, BufferUsage.WriteOnly);
-                m_gamePipeIndiceBuffer.SetData(m_gamePipeIndices);
-                GraphicsDevice.Indices = m_gamePipeIndiceBuffer;
-
-                m_linesVertices = createPipeVertices(lenght, radius - 0.5f, 20, step, XNAColor.Black);
-                m_linesIndices = createLinesIndicesBuffer(m_linesVertices, divisions, lenght);
-
-                m_linesVerticesBuffer = new VertexBuffer(GraphicsDevice, typeof(VertexPositionColor), m_linesVertices.Length, BufferUsage.WriteOnly);
-                m_linesVerticesBuffer.SetData(m_linesVertices);
-                GraphicsDevice.SetVertexBuffer(m_linesVerticesBuffer);
-
-                m_linesIndicesBuffer = new IndexBuffer(GraphicsDevice, IndexElementSize.ThirtyTwoBits, m_linesIndices.Length, BufferUsage.WriteOnly);
-                m_linesIndicesBuffer.SetData(m_linesIndices);
+                m_pipe = new Pipe(GraphicsDevice , lenght, radius, divisions, step, XNAColor.Red, XNAColor.Black);
+                m_modelList.Add("pipe", m_pipe);
 
                 //Camera
-                m_cameraTarget = new Vector3(0, -((radius-1)/2), lenght*step);
-                m_cameraPosition = new Vector3(0, -((radius - 1) / 2), 0);
+                m_cameraTarget = new Vector3(0, -((8*radius-1)/10), lenght*step);
+                m_cameraPosition = new Vector3(0, -((8*radius - 1) / 10), 0);
                 m_cameraUp = Vector3.Up;
 
                 m_basicEffect.FogStart = m_cameraPosition.Z + 50;
@@ -313,8 +292,16 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            m_actualMouseState = XNAMouse.GetState();
-            m_keyboardState = XNAKeyboard.GetState();
+
+            if (this.IsActive)
+            {
+                if (!m_WindowsStateIsActive)
+                    m_actualMouseState = m_oldMouseState = XNAMouse.GetState();
+                else
+                    m_actualMouseState = XNAMouse.GetState();
+                m_keyboardState = XNAKeyboard.GetState();
+            }
+            m_WindowsStateIsActive = this.IsActive;
 
             if (m_gamePhase != "Playing Game")
             {
@@ -350,9 +337,9 @@ namespace APGameEngine
                 }
 
                 if(m_keyboardState.IsKeyDown(XNAKeys.S))
-                    m_cameraPosition.Z -= 2000/ (30.0f * 60.0f);
+                    m_cameraPosition.Z -= 2000*15/ (30.0f * 60.0f);
                 else if(m_keyboardState.IsKeyDown(XNAKeys.Z))
-                    m_cameraPosition.Z += 2000 / (30.0f * 60.0f);
+                    m_cameraPosition.Z += 2000*15 / (30.0f * 60.0f);
 
                 m_view = Matrix.CreateLookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
             }
@@ -473,6 +460,8 @@ namespace APGameEngine
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, (int)1000/m_fps);
+
             #region Launch
 
             //Start game
@@ -515,16 +504,10 @@ namespace APGameEngine
                 m_basicEffect.FogEnabled = true;
                 m_basicEffect.VertexColorEnabled = true;
 
-                foreach(EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
-                {
-                    pass.Apply();
-                    GraphicsDevice.SetVertexBuffer(m_gamePipeVerticeBuffer);
-                    GraphicsDevice.Indices = m_gamePipeIndiceBuffer;
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, m_gamePipeVertices.Length, 0, m_gamePipeIndices.Length/3);
-                    GraphicsDevice.SetVertexBuffer(m_linesVerticesBuffer);
-                    GraphicsDevice.Indices = m_linesIndicesBuffer;
-                    GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, m_linesVertices.Length, 0, m_linesIndices.Length / 2);
-                }
+                if(m_basicEffect != m_pipe.getBasicEffect())
+                    m_pipe.setBasicEffect(m_basicEffect);
+
+                m_pipe.Draw();
             }
 
             #endregion
@@ -585,25 +568,79 @@ namespace APGameEngine
                 return true;
             else
                 return false;
+        }  
+
+        #endregion
+    }
+
+    public class Pipe
+    {
+        #region Properties
+
+        VertexPositionColor[] m_pipeVertices = null;
+        int[] m_pipeIndices = null;
+        VertexPositionColor[] m_linesVertices = null;
+        int[] m_linesIndices = null;
+        GraphicsDevice m_graphicsDevice = null;
+        BasicEffect m_basicEffect = null;
+
+        VertexBuffer m_pipeVerticeBuffer = null;
+        IndexBuffer m_pipeIndiceBuffer = null;
+        VertexBuffer m_linesVerticesBuffer = null;
+        IndexBuffer m_linesIndicesBuffer = null;
+
+        int m_lenght = 0;
+        float m_radius = 0.0f;
+        int m_divisions = 0;
+        int m_step = 0;
+        XNAColor m_pipeColor;
+        XNAColor m_linesColor;
+
+        #endregion
+
+        #region Constructors
+
+        public Pipe(GraphicsDevice graphicsDevice, int lenght, float radius, int divisions, int step, XNAColor pipecolor, XNAColor linesColor)
+        {
+            m_graphicsDevice = graphicsDevice;
+            m_lenght = lenght;
+            m_radius = radius;
+            m_divisions = divisions;
+            m_step = step;
+            m_pipeColor = pipecolor;
+            m_linesColor = linesColor;
+
+            m_basicEffect = new BasicEffect(m_graphicsDevice);
+
+            m_pipeVertices = createPipeVertices(lenght, radius, divisions, step, pipecolor);
+            m_pipeIndices = createPipeIndicesBuffer(m_pipeVertices, divisions);
+
+            m_pipeVerticeBuffer = createVertexBuffer(m_pipeVertices);
+            m_pipeIndiceBuffer = createIndexBuffer(m_pipeIndices);
+
+            m_linesVertices = createPipeVertices(lenght, radius - (radius/20), divisions, step, linesColor);
+            m_linesIndices = createLinesIndicesBuffer(m_linesVertices, divisions, lenght);
+
+            m_linesVerticesBuffer = createVertexBuffer(m_linesVertices);
+            m_linesIndicesBuffer = createIndexBuffer(m_linesIndices);
         }
 
-        /// <summary>
-        /// Create a pipe of a specified lenght with 10 subdivisions
-        /// </summary>
-        /// <param name="lenght">int: Number of repetitions of the pipe</param>
-        /// <returns>VertexPositionColor[]</returns>
-        public VertexPositionColor[] createPipeVertices(int lenght, float radius, int divisions, int step, XNAColor color)
+        #endregion
+
+        #region Private methods
+
+        private VertexPositionColor[] createPipeVertices(int lenght, float radius, int divisions, int step, XNAColor color)
         {
-            VertexPositionColor[] pipeVerticesArray = new VertexPositionColor[(divisions*lenght)+divisions];
+            VertexPositionColor[] pipeVerticesArray = new VertexPositionColor[(divisions * lenght) + divisions];
 
             int pipeDataArrayAccessIndex = 0;
-            double angle = MathHelper.ToRadians(360.0f/divisions);
+            double angle = MathHelper.ToRadians(360.0f / divisions);
 
-            for (int i = 0; i <= lenght; i ++)
+            for (int i = 0; i <= lenght; i++)
             {
                 for (int j = 0; j < divisions; j++)
                 {
-                    createPoint(pipeVerticesArray, pipeDataArrayAccessIndex, radius, angle, j, i*step, color);
+                    createPoint(pipeVerticesArray, pipeDataArrayAccessIndex, radius, angle, j, i * step, color);
                     pipeDataArrayAccessIndex++;
                 }
             }
@@ -613,18 +650,27 @@ namespace APGameEngine
 
         private void createPoint(VertexPositionColor[] pipe, int pipeDataArrayAccessIndex, float radius, double angle, int angleMultiplier, int lenght, XNAColor color)
         {
-            pipe[pipeDataArrayAccessIndex] = new VertexPositionColor(new Vector3(radius*(float)Math.Cos(angleMultiplier*angle), radius*(float)Math.Sin(angleMultiplier*angle), lenght), color);
+            pipe[pipeDataArrayAccessIndex] = new VertexPositionColor(new Vector3(radius * (float)Math.Cos(angleMultiplier * angle), radius * (float)Math.Sin(angleMultiplier * angle), lenght), color);
+        }
+
+        private VertexBuffer createVertexBuffer(VertexPositionColor[] VerticesArray)
+        {
+            VertexBuffer verticeBuffer = new VertexBuffer(m_graphicsDevice, typeof(VertexPositionColor), VerticesArray.Length, BufferUsage.WriteOnly);
+            verticeBuffer.SetData(VerticesArray);
+            m_graphicsDevice.SetVertexBuffer(verticeBuffer);
+
+            return verticeBuffer;
         }
 
         private int[] createPipeIndicesBuffer(VertexPositionColor[] pipe, int divisions)
         {
-            int[] indicesBuffer = new int[pipe.Length * 6 - (6*divisions)];
+            int[] indicesBuffer = new int[pipe.Length * 6 - (6 * divisions)];
 
             int index = 0;
 
-            for (int i = 0; i < pipe.Length - divisions; i ++)
+            for (int i = 0; i < pipe.Length - divisions; i++)
             {
-                if (i % divisions != 19)
+                if (i % divisions != divisions - 1)
                 {
                     indicesBuffer[index] = i + divisions;
                     indicesBuffer[++index] = i;
@@ -649,25 +695,255 @@ namespace APGameEngine
             return indicesBuffer;
         }
 
+        private IndexBuffer createIndexBuffer(int[] indices)
+        {
+            IndexBuffer indiceBuffer = new IndexBuffer(m_graphicsDevice, IndexElementSize.ThirtyTwoBits, indices.Length, BufferUsage.WriteOnly);
+            indiceBuffer.SetData(indices);
+            m_graphicsDevice.Indices = indiceBuffer;
+
+            return indiceBuffer;
+        }
+
         private int[] createLinesIndicesBuffer(VertexPositionColor[] lines, int divisions, int lenght)
         {
-            int [] indicesBuffer = new int[lines.Length*2];
+            int[] indicesBuffer = new int[lines.Length * 2];
 
             int indexAccess = 0;
 
-            for(int i = 0; i < divisions; i++)
+            for (int i = 0; i < divisions; i++)
             {
-                for (int j = 0; j < lenght; j ++)
+                for (int j = 0; j < lenght; j++)
                 {
-                    indicesBuffer[indexAccess] = j*divisions + i;
+                    indicesBuffer[indexAccess] = j * divisions + i;
                     indexAccess++;
-                    indicesBuffer[indexAccess] = (j+1) * divisions + i;
+                    indicesBuffer[indexAccess] = (j + 1) * divisions + i;
                     indexAccess++;
                 }
             }
 
             return indicesBuffer;
         }
+
+        #endregion
+
+        #region Public methods
+
+        public void Draw()
+        {
+            m_basicEffect.FogEnabled = true;
+            m_basicEffect.VertexColorEnabled = true;
+
+            foreach (EffectPass pass in m_basicEffect.CurrentTechnique.Passes)
+            {
+                pass.Apply();
+                m_graphicsDevice.SetVertexBuffer(m_pipeVerticeBuffer);
+                m_graphicsDevice.Indices = m_pipeIndiceBuffer;
+                m_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, m_pipeVertices.Length, 0, m_pipeIndices.Length / 3);
+                m_graphicsDevice.SetVertexBuffer(m_linesVerticesBuffer);
+                m_graphicsDevice.Indices = m_linesIndicesBuffer;
+                m_graphicsDevice.DrawIndexedPrimitives(PrimitiveType.LineList, 0, 0, m_linesVertices.Length, 0, m_linesIndices.Length / 2);
+            }
+        }
+
+        #endregion
+
+        #region Setters & Getters
+
+        public void setGraphicDevice(GraphicsDevice graphicDevice)
+        {
+            m_graphicsDevice = graphicDevice;
+        }
+
+        public GraphicsDevice getGraphicDevice()
+        {
+            return m_graphicsDevice;
+        }
+
+        public int getLenght()
+        {
+            return m_lenght;
+        }
+
+        public float getRadius()
+        {
+            return m_radius;
+        }
+
+        public int getDivisions()
+        {
+            return m_divisions;
+        }
+
+        public int getStep()
+        {
+            return m_step;
+        }
+
+        public XNAColor getPipeColor()
+        {
+            return m_pipeColor;
+        }
+
+        public XNAColor getLineColor()
+        {
+            return m_linesColor;
+        }
+
+        public VertexPositionColor[] getPipeVerticesArray()
+        {
+            return m_pipeVertices;
+        }
+
+        public VertexPositionColor[] getLineVerticesArray()
+        {
+            return m_linesVertices;
+        }
+
+        public int[] getPipeIndexArray()
+        {
+            return m_pipeIndices;
+        }
+
+        public int[] getLineIndexArray()
+        {
+            return m_linesIndices;
+        }
+
+        public Effect getEffect()
+        {
+            return m_basicEffect;
+        }
+
+        public VertexBuffer getPipeVertexBuffer()
+        {
+            return m_pipeVerticeBuffer;
+        }
+
+        public IndexBuffer getPipeIndexBuffer()
+        {
+            return m_pipeIndiceBuffer;
+        }
+
+        public VertexBuffer getLinesVertexBuffer()
+        {
+            return m_linesVerticesBuffer;
+        }
+
+        public IndexBuffer getLinesIndexBuffer()
+        {
+            return m_linesIndicesBuffer;
+        }
+
+        public GraphicsDevice getGraphicsDevice()
+        {
+            return m_graphicsDevice;
+        }
+
+        public void setBasicEffect(BasicEffect effect)
+        {
+            m_basicEffect = effect;
+        }
+
+        public BasicEffect getBasicEffect()
+        {
+            return m_basicEffect;
+        }
+
+        #endregion
+    }
+
+    public class Bloc
+    {
+        #region Properties
+
+        VertexPositionColor[] m_blocVertices = null;
+        int[] m_blocIndices = null;
+        VertexPositionColor[] m_blocOutLineVertices = null;
+        int[] m_blocOutLineIndices = null;
+        GraphicsDevice m_graphicsDevice = null;
+        BasicEffect m_basicEffect = null;
+
+        VertexBuffer m_blocVertexBuffer = null;
+        IndexBuffer m_blocIndexBuffer = null;
+        VertexBuffer m_blocOutLineVertexBuffer = null;
+        IndexBuffer m_blocOutLineIndexBuffer = null;
+
+        Matrix m_PositionMatrix;
+        XNAColor m_blocColor;
+        XNAColor m_blocOutLineColor;
+
+        #endregion
+
+        #region Constructors
+
+        public Bloc(GraphicsDevice graphicsDevice, Matrix positionMatrix, XNAColor blocColor, XNAColor outLineBlocColor)
+        {
+            m_graphicsDevice = graphicsDevice;
+            m_PositionMatrix = positionMatrix;
+            m_blocColor = blocColor;
+            m_blocOutLineColor = outLineBlocColor;
+            m_basicEffect = new BasicEffect(m_graphicsDevice);
+
+            m_blocVertices = createBlocVertices();
+            m_blocIndices = createBlocIndices();
+
+            m_blocVertexBuffer = createBlocVerticesBuffer();
+            m_blocIndexBuffer = createBlocIndexBuffer();
+
+            m_blocOutLineVertices = createBlocVertices();
+            m_blocOutLineIndices = createBlocOutLineIndices();
+
+            m_blocOutLineVertexBuffer = createBlocVerticesBuffer();
+            m_blocOutLineIndexBuffer = createBlocIndexBuffer();
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private VertexPositionColor[] createBlocVertices(VertexPositionColor[] vertexArray, Matrix position, XNAColor verticesColor)
+        {
+            VertexPositionColor[] blocVertices = new VertexPositionColor[8];
+
+            for (int i = 0; i < 8; i++)
+            {
+
+            }
+        }
+
+        private void createPoint(VertexPositionColor vertexArray, int accesIndex, Matrix position, XNAColor vertexColor)
+        {
+            VertexPositionColor[accesIndex] = new VertexPositionColor(new Vector3( , , ), vertexColor);
+        }
+
+        private int[] createBlocIndices()
+        {
+
+        }
+
+        private VertexBuffer createBlocVerticesBuffer()
+        {
+        }
+
+        private IndexBuffer createBlocIndexBuffer()
+        {
+        }
+
+        private int[] createBlocOutlineIndices()
+        {
+        }
+
+        #endregion
+
+        #region Public methods
+
+
+
+        #endregion
+
+        #region Setters & Getters
+
+
 
         #endregion
     }
